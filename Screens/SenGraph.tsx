@@ -9,21 +9,21 @@ const SenGraph = ({ navigation, route }) => {
     const getSensorImagePath = () => {
         switch (sindex) {
             case 0:
-                return require('C:/Users/Uchit Chavda/Desktop/React Native/CleanPro/Images/Gas.png');
+                return require('../Images/Gas.png');
             case 1:
-                return require('C:/Users/Uchit Chavda/Desktop/React Native/CleanPro/Images/Overflow.png');
+                return require('../Images/Overflow.png');
             case 2:
-                return require('C:/Users/Uchit Chavda/Desktop/React Native/CleanPro/Images/Distance.png');
+                return require('../Images/Distance.png');
             case 3:
-                return require('C:/Users/Uchit Chavda/Desktop/React Native/CleanPro/Images/PIR.png');
+                return require('../Images/PIR.png');
             case 4:
-                return require('C:/Users/Uchit Chavda/Desktop/React Native/CleanPro/Images/IR.png');
+                return require('../Images/IR.png');
             case 5:
-                return require('C:/Users/Uchit Chavda/Desktop/React Native/CleanPro/Images/Humid.png');
+                return require('../Images/Humid.png');
             case 6:
-                return require('C:/Users/Uchit Chavda/Desktop/React Native/CleanPro/Images/Temp.png');
+                return require('../Images/Temp.png');
             case 7:
-                return require('C:/Users/Uchit Chavda/Desktop/React Native/CleanPro/Images/Tank.png');
+                return require('../Images/Tank.png');
         }
     };
 
