@@ -1,7 +1,19 @@
 import { View, Text, Pressable, StyleSheet, ScrollView } from 'react-native'
 import React from 'react'
+import { StackNavigationProp } from '@react-navigation/stack';
+import axios from 'axios';
 
-const AdminHome = ({ navigation }) => {
+type LoginStackParamList = {
+    Home: undefined;
+    Login: undefined;
+    Register: undefined;
+    "Admin Home": { Name: string; }
+    "User Home": { Name: string; }
+  };
+  
+  type NavigationProps = StackNavigationProp<LoginStackParamList, 'Login'>;
+
+const AdminHome = ({ navigation, }: { navigation: NavigationProps }) => {
     return (
         <View style={adhstyles.adhBody}>
             <View style={adhstyles.buttonSupView}>
