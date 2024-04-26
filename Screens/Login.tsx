@@ -2,9 +2,20 @@ import { View, Text, StyleSheet, Pressable, ScrollView, Alert } from 'react-nati
 import { TextInput } from 'react-native-paper';
 import React, { useState } from 'react';
 import { Link } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import axios from 'axios';
 
+type LoginStackParamList = {
+  Home: undefined;
+  Login: undefined;
+  Register: undefined;
+  "Admin Home": { Name: string; }
+  "User Home": { Name: string; }
+};
 
-const Login = ({ navigation }) => {
+type NavigationProps = StackNavigationProp<LoginStackParamList, 'Login'>;
+
+const Login = ({ navigation }: { navigation: NavigationProps }) => {
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -17,16 +28,31 @@ const Login = ({ navigation }) => {
     setPassword(text);
   };
 
-  const handleLogin = () => {
-    if (userName === 'A' && password === 'P') {
-      navigation.navigate("Admin Home");
+  const handleLogin = async () => {
+    try {
+      if (userName !== '' && password !== '') {
+        if (password.length > 8) {
+          const response = await axios.post('http://192.168.0.102:8000/userDetails', `email=${userName}&password=${password}`)
+          const role = response.data.Role
+          const name = response.data.Name
+          if (role == "Admin") {
+            navigation.navigate("Admin Home", { Name: name });
+          }
+          else if (role == "User") {
+            navigation.navigate("User Home", { Name: name });
+          }
+          else if (role == "User Not Found") {
+            Alert.alert("Error", "Invalid username or password");
+          }
+        } else { Alert.alert("Error", "Password must be at least 8 characters long"); }
+      } else {
+        Alert.alert("Error", "Fill the credentials");
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return null;
     }
-    if (userName === 'U' && password === 'P'){
-      navigation.navigate("User Home");
-    } else {
-      Alert.alert("Error", "Invalid username or password");
-    }
-  }
+  };
 
   return (
     <View style={logstyle.logBody}>
@@ -36,7 +62,7 @@ const Login = ({ navigation }) => {
       <ScrollView>
         <View style={logstyle.logcard}>
           <TextInput
-            label="User Name"
+            label="Email"
             mode="outlined"
             value={userName}
             onChangeText={handleUserNameChange}
@@ -44,7 +70,7 @@ const Login = ({ navigation }) => {
               roundness: 10,
               colors: {
                 primary: 'red',
-                underlineColor: 'transparent',
+                // underlineColor: 'transparent',
               }
             }}
             style={logstyle.logInput2}
@@ -59,13 +85,13 @@ const Login = ({ navigation }) => {
               roundness: 10,
               colors: {
                 primary: 'red',
-                underlineColor: 'transparent',
+                // underlineColor: 'transparent',
               }
             }}
             style={logstyle.logInput2}
           />
-          <Text style={logstyle.signupText}>don't have an account ?
-            <Link to={{screen : 'Register'}} style={logstyle.signupRegLink}> Register</Link>
+          <Text style={logstyle.signupText}>Don't have an account?
+            <Link to={{ screen: 'Register' }} style={logstyle.signupRegLink}> Register</Link>
           </Text>
           <View>
             <Pressable style={logstyle.logbutton} onPress={handleLogin}>
@@ -88,14 +114,15 @@ const logstyle = StyleSheet.create({
     padding: 10,
   },
   logBody: {
-    backgroundColor: "whitesmoke",
-    // minHeight: 700,
+    backgroundColor: "white",
+    minHeight: "100%",
   },
   logTitle: {
     fontWeight: "bold",
     fontSize: 50,
     alignSelf: "center",
-    fontFamily: 'Roboto',
+    fontFamily: 'Times New Roman',
+    fontStyle: 'italic',
     color: 'black',
   },
   logbutton: {
@@ -121,6 +148,7 @@ const logstyle = StyleSheet.create({
     underlineColorAndroid: "transparent",
     marginBottom: 10,
     marginTop: 5,
+    backgroundColor: "white",
   },
   logcard: {
     backgroundColor: 'white',
@@ -132,7 +160,7 @@ const logstyle = StyleSheet.create({
     marginVertical: 120,
   },
   signupRegLink: {
-    color: "blue",
+    color: "red",
   },
   signupText: {
     marginLeft: 20,

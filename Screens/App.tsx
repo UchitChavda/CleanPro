@@ -9,7 +9,6 @@ import Register from './Register';
 import Login from './Login';
 import Report from './Report';
 import Map from './Map';
-import { normalize } from 'react-native-elements';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import AdminHome from './AdminHome';
@@ -135,7 +134,6 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
     display: 'flex',
-    // justifyContent: 'center'
   },
   StartButton: {
     width: 150,
@@ -154,9 +152,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     marginTop: 100,
-    // alignContent: 'center',
-    // display: 'flex',
-    // marginVertical: 'auto'
   },
   RegButton: {
     width: 150,
@@ -180,7 +175,8 @@ type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   "Sensor Data": undefined;
-  Report:undefined;
+  Report: undefined;
+  Washroom: undefined;
 };
 
 type NavigationProps = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -199,19 +195,9 @@ function Logo({ navigation }: { navigation: NavigationProps }) {
       <Text style={styles.startTitle}>CleanPro</Text>
       <Text style={styles.startTagline}>Sustainable solution for Public Toilet</Text>
       <Text style={styles.startTagline}>Sanitation</Text>
-      {/* <Pressable style={styles.StartButton} onPress={() => navigation.navigate("Sensor Data")}>
-        <Text style={styles.StartButtonTitle}>Start</Text>
-      </Pressable> */}
       <Pressable style={styles.LogButton} onPress={() => navigation.navigate("Login")}>
         <Text style={styles.StartButtonTitle}>Start</Text>
       </Pressable>
-      {/* <Pressable style={styles.RegButton} onPress={() => navigation.navigate("Register")}>
-        <Text style={styles.StartButtonTitle}>Register</Text>
-      </Pressable> */}
-      {/* <Pressable style={styles.RegButton} onPress={()=> navigation.navigate("Report")}>
-        <Text style={styles.StartButtonTitle}>Report</Text>
-      </Pressable> */}
-      {/* <Button title='Start' onPress={()=> this.props.navigation.navigate("Sensor Details")} /> */}
     </View>
   );
 }
@@ -274,7 +260,6 @@ function MyStack() {
         name="Home"
         component={Logo}
         options={{
-          // headerStyle: { display: 'none' },
           headerTitleStyle: { display: 'none' },
           headerBackAccessibilityLabel: "none",
         }}
@@ -283,7 +268,6 @@ function MyStack() {
         name="Sensor Data"
         component={Sensor}
         options={{
-          // headerStyle: { display: 'none' },
           headerTitleStyle: { display: 'none' },
           headerBackAccessibilityLabel: "none",
         }}
@@ -292,7 +276,6 @@ function MyStack() {
         name="Washroom"
         component={Washlist}
         options={{
-          // headerStyle: { display: 'none' },
           headerTitleStyle: { display: 'none' },
           headerBackAccessibilityLabel: "none",
         }}
@@ -301,7 +284,6 @@ function MyStack() {
         name="Map"
         component={Map}
         options={{
-          // headerStyle: { display: 'none' },
           headerTitleStyle: { display: 'none' },
           headerBackAccessibilityLabel: "none",
         }}
@@ -310,7 +292,6 @@ function MyStack() {
         name="Sensor Graph"
         component={SenGraph}
         options={{
-          // headerStyle: { display: 'none' },
           headerTitleStyle: { display: 'none' },
           headerBackAccessibilityLabel: "none",
         }}
@@ -319,7 +300,6 @@ function MyStack() {
         name="Login"
         component={Login}
         options={{
-          // headerStyle: { display: 'none' },
           headerTitleStyle: { display: 'none' },
           headerBackAccessibilityLabel: "none",
         }}
@@ -328,7 +308,6 @@ function MyStack() {
         name="Register"
         component={Register}
         options={{
-          // headerStyle: { display: 'none' },
           headerTitleStyle: { display: 'none' },
           headerBackAccessibilityLabel: "none",
         }}
@@ -337,7 +316,6 @@ function MyStack() {
         name="User Home"
         component={UserH}
         options={{
-          // headerStyle: { display: 'none' },
           headerTitleStyle: { display: 'none' },
           headerBackAccessibilityLabel: "none",
         }}
@@ -346,7 +324,6 @@ function MyStack() {
         name="Admin Home"
         component={AdminHome}
         options={{
-          // headerStyle: { display: 'none' },
           headerTitleStyle: { display: 'none' },
           headerBackAccessibilityLabel: "none",
         }}
@@ -355,7 +332,6 @@ function MyStack() {
         name="Report"
         component={Report}
         options={{
-          // headerStyle: { display: 'none' },
           headerTitleStyle: { display: 'none' },
           headerBackAccessibilityLabel: "none",
         }}

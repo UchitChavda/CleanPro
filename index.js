@@ -9,7 +9,7 @@ import {name as appName} from './app.json';
 import Logo from './Screens/Logo';
 import Register from './Screens/Register';
 import newReg from './Screens/Result';
-import MyTabs from './Screens/toptab';
+// import MyTabs from './Screens/toptab';
 import Login from './Screens/Login';
 import SenGraph from './Screens/SenGraph';
 import FindWash from './Screens/FindWash';

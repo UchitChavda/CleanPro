@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 import React,{useState} from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from 'react-native';
-import createMapLink from 'react-native-open-maps';
+
 
 const SenGraph = ({ navigation, route }) => {
     const { sensorName, sensorValue, sindex } = route.params;
