@@ -70,7 +70,6 @@ const Login = ({ navigation }: { navigation: NavigationProps }) => {
               roundness: 10,
               colors: {
                 primary: 'red',
-                // underlineColor: 'transparent',
               }
             }}
             style={logstyle.logInput2}
@@ -85,7 +84,6 @@ const Login = ({ navigation }: { navigation: NavigationProps }) => {
               roundness: 10,
               colors: {
                 primary: 'red',
-                // underlineColor: 'transparent',
               }
             }}
             style={logstyle.logInput2}

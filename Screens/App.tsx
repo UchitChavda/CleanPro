@@ -13,6 +13,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import AdminHome from './AdminHome';
 import Washlist from './Washlist';
+import AdminWashlist from './AdminWashlist';
 
 const Stack = createStackNavigator();
 
@@ -275,6 +276,14 @@ function MyStack() {
       <Stack.Screen
         name="Washroom"
         component={Washlist}
+        options={{
+          headerTitleStyle: { display: 'none' },
+          headerBackAccessibilityLabel: "none",
+        }}
+      />
+      <Stack.Screen
+        name="Adminwashroom"
+        component={AdminWashlist}
         options={{
           headerTitleStyle: { display: 'none' },
           headerBackAccessibilityLabel: "none",

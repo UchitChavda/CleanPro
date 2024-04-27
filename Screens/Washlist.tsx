@@ -1,6 +1,15 @@
 import { View, Text, Pressable, StyleSheet} from 'react-native'
 import React from 'react'
 
+type AdminStackParamList = {
+    Login: undefined;
+    "Admin Home": { Name: string; }
+    "Sensor Data": undefined;
+    "Adminwashroom": undefined;
+};
+
+type AdminNavigationProps = StackNavigationProp<AdminStackParamList, "Admin Home">;
+
 const Washlist = ({ navigation }) => {
     return (
         <View style={wlstyles.wlBody}>
