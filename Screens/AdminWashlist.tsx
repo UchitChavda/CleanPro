@@ -14,7 +14,7 @@ type AdminWashNavigationProps = StackNavigationProp<AdminWashStackParamList, "Ad
 
 const fetchWashroomData = async () => {
     try {
-        const response = await axios.get('http://192.168.0.102:8000/washroomList');
+        const response = await axios.get('http://192.168.0.104:8000/washroomList');
         const values = response.data.Washrooms;
         return values;
     } catch (error) {
@@ -42,9 +42,9 @@ const AdminWashlist = ({ navigation }: { navigation: AdminWashNavigationProps })
                     <Pressable style={wlstyles.wlButton} >
                         <Text style={wlstyles.wlButtonTitle}>Add</Text>
                     </Pressable>
-                    <Pressable style={wlstyles.wlButton} >
+                    {/* <Pressable style={wlstyles.wlButton} >
                         <Text style={wlstyles.wlButtonTitle}>Delete</Text>
-                    </Pressable>
+                    </Pressable> */}
                     {washroomvalue !== 0 && (
                         washroomvalue.map((item: any, index: any) => (
                             <Pressable key={index} style={wlstyles.wlButton} onPress={() => navigation.navigate("Map", { longitude: item.longitude, latitude: item.latitude })}>

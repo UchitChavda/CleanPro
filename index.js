@@ -10,5 +10,6 @@ import 'react-native-reanimated';
 import AdminHome from './Screens/AdminHome';
 import Washlist from './Screens/Washlist';
 import Map from "./Screens/Map"
+import UserList from './Screens/UserList';
 
 AppRegistry.registerComponent(appName, () => App)

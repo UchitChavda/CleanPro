@@ -22,13 +22,13 @@ const AdminHome = ({ navigation,route}:{ navigation: AdminNavigationProps,route:
                         <Text style={adhstyles.adhButtonTitle}>Data</Text>
                     </Pressable>
                     <Pressable style={adhstyles.adhButton}>
-                        <Text style={adhstyles.adhButtonTitle}>User List</Text>
+                        <Text style={adhstyles.adhButtonTitle} onPress={() => navigation.navigate("User List")}>User List</Text>
                     </Pressable>
                     <Pressable style={adhstyles.adhButton} onPress={() => navigation.navigate("Adminwashroom")}>
                         <Text style={adhstyles.adhButtonTitle}>Washroom List</Text>
                     </Pressable>
                     <Pressable style={adhstyles.adhButton}>
-                        <Text style={adhstyles.adhButtonTitle}>Reports</Text>
+                        <Text style={adhstyles.adhButtonTitle} onPress={() => navigation.navigate("Report List")}>Reports</Text>
                     </Pressable>
                 </View>
             </View>

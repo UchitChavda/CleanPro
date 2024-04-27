@@ -30,23 +30,28 @@ const Login = ({ navigation }: { navigation: NavigationProps }) => {
 
   const handleLogin = async () => {
     try {
-      if (userName !== '' && password !== '') {
-        if (password.length > 8) {
-          const response = await axios.post('http://192.168.0.102:8000/userDetails',`email=${userName}&password=${password}`)
-          const role = response.data.Role
-          const name = response.data.Name
-          if (role == "Admin") {
-            navigation.navigate("Admin Home", { Name: name });
-          }
-          else if (role == "User") {
-            navigation.navigate("User Home", { Name: name });
-          }
-          else if (role == "User Not Found") {
-            Alert.alert("Error", "Invalid username or password");
-          }
-        } else { Alert.alert("Error", "Password must be at least 8 characters long"); }
+      // if (userName !== '' && password !== '') {
+      //   if (password.length > 8) {
+      //     const response = await axios.post('http://192.168.0.104:8000/userDetails',`email=${userName}&password=${password}`)
+      //     const role = response.data.Role
+      //     const name = response.data.Name
+      //     if (role == "Admin") {
+      //       navigation.navigate("Admin Home", { Name: name });
+      //     }
+      //     else if (role == "User") {
+      //       navigation.navigate("User Home", { Name: name });
+      //     }
+      //     else if (role == "User Not Found") {
+      //       Alert.alert("Error", "Invalid username or password");
+      //     }
+      //   } else { Alert.alert("Error", "Password must be at least 8 characters long"); }
+      // } else {
+      //   Alert.alert("Error", "Fill the credentials");
+      // }
+      if (userName === 'a' && password === 'p') {
+        navigation.navigate("Admin Home", { Name: 'Uchit' });
       } else {
-        Alert.alert("Error", "Fill the credentials");
+        Alert.alert("Error", "Invalid username or password");
       }
     } catch (error) {
       console.error('Error fetching data:', error);

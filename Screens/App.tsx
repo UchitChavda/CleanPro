@@ -14,6 +14,8 @@ import { useState, useEffect } from 'react';
 import AdminHome from './AdminHome';
 import Washlist from './Washlist';
 import AdminWashlist from './AdminWashlist';
+import UserList from './UserList';
+import ReportList from './ReportList';
 
 const Stack = createStackNavigator();
 
@@ -105,7 +107,7 @@ const sytles1 = StyleSheet.create({
 
 const fetchData = async () => {
   try {
-    const response = await axios.get('http://192.168.0.102:8000/fetch-data-from-thingspeak/');
+    const response = await axios.get('http://192.168.0.104:8000/fetch-data-from-thingspeak/');
     const sensorvalue = response.data[0];
     return sensorvalue;
   } catch (error) {
@@ -306,6 +308,14 @@ function MyStack() {
         }}
       />
       <Stack.Screen
+        name="User List"
+        component={UserList}
+        options={{
+          headerTitleStyle: { display: 'none' },
+          headerBackAccessibilityLabel: "none",
+        }}
+      />
+      <Stack.Screen
         name="Login"
         component={Login}
         options={{
@@ -324,6 +334,14 @@ function MyStack() {
       <Stack.Screen
         name="User Home"
         component={UserH}
+        options={{
+          headerTitleStyle: { display: 'none' },
+          headerBackAccessibilityLabel: "none",
+        }}
+      />
+      <Stack.Screen
+        name="Report List"
+        component={ReportList}
         options={{
           headerTitleStyle: { display: 'none' },
           headerBackAccessibilityLabel: "none",
