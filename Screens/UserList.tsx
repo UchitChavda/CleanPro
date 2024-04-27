@@ -1,25 +1,64 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, Text, Pressable, StyleSheet,Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
+
+const fetchUserData = async () => {
+    try {
+        const response = await axios.get('http://192.168.0.102:8000/userList');
+        const values = response.data.Users;
+        return values;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
+};
+
+const handlePress = (item:any) => { 
+    Alert.alert(
+      'Title',
+      'Message',
+      [
+        {
+          text: 'Button 1',
+          style:usrlStyles.usrlListItemButtonText,
+          onPress: () => {
+            // Execute function for Button 1
+            console.log('Button 1 pressed',item);
+            // Call your function here
+          },
+        },
+        // Add more buttons as needed
+      ],
+    );
+  };
 
 const UserList = ({ navigation }) => {
+    const [uservalue, setUserValue] = useState<any>(0);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const audata: any = await fetchUserData();
+            setUserValue(audata);
+        };
+        fetchData();
+    }, []);
     return (
         <View style={usrlStyles.usrBody}>
             <View style={usrlStyles.usrlMainView}>
                 <Text style={usrlStyles.usrlTitle}>User List</Text>
-                <View style={usrlStyles.usrlListView}>
-                    <View style={usrlStyles.usrlListItem}>
-                        <Text style={usrlStyles.usrlListItemText}>User Name</Text>
-                        <Pressable style={usrlStyles.usrlListItemDelButton} onPress={() => navigation.navigate("Home")}>
-                            <Text style={usrlStyles.usrlListItemButtonText}>Delete</Text>
-                        </Pressable>
-                    </View>
-                    <View style={usrlStyles.usrlListItem}>
-                        <Text style={usrlStyles.usrlListItemText}>User Name</Text>
-                        <Pressable style={usrlStyles.usrlListItemDelButton} onPress={() => navigation.navigate("Home")}>
-                            <Text style={usrlStyles.usrlListItemButtonText}>Delete</Text>
-                        </Pressable>
-                    </View>
-                </View>
+                {uservalue !== null && uservalue !== 0 && (
+                    uservalue.map((item: any, index: any) => (
+                        <View style={usrlStyles.usrlListView} key={index}>
+                            <View style={usrlStyles.usrlListItem}>
+                                <Text style={usrlStyles.usrlListItemText}>{item.Name}</Text>
+                                <Text style={usrlStyles.usrlListItemText}>{item.Email}</Text>
+                                <Pressable style={usrlStyles.usrlListItemDelButton} onPress={() => handlePress(item)}>
+                                    <Text style={usrlStyles.usrlListItemButtonText}>Delete</Text>
+                                </Pressable>
+                            </View>
+                        </View>
+                    ))
+                )}
             </View>
         </View>
     )
@@ -27,11 +66,10 @@ const UserList = ({ navigation }) => {
 
 const usrlStyles = StyleSheet.create({
     usrBody: {
-        // backgroundColor: "red",
+        backgroundColor: "white",
         height: "100%"
     },
     usrlMainView: {
-        // backgroundColor: "blue",
         height: "100%",
         alignItems: 'center'
     },
@@ -45,7 +83,6 @@ const usrlStyles = StyleSheet.create({
         fontStyle: "italic",
     },
     usrlListView: {
-        // backgroundColor: "green",
         width: "90%"
     },
     usrlListItem: {
@@ -60,9 +97,9 @@ const usrlStyles = StyleSheet.create({
         marginBottom: 20
     },
     usrlListItemText: {
-        // backgroundColor: "yellow",
         marginLeft: 20,
-        fontSize: 20
+        fontSize: 20,
+        color: "black",
     },
     usrlListItemDelButton: {
         backgroundColor: 'red',

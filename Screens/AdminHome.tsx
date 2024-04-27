@@ -7,6 +7,8 @@ type AdminStackParamList = {
     "Admin Home": { Name: string; }
     "Sensor Data": undefined;
     "Adminwashroom": undefined;
+    "User List": undefined;
+    "Report List": undefined;
 };
 
 type AdminNavigationProps = StackNavigationProp<AdminStackParamList, "Admin Home">;
@@ -21,14 +23,14 @@ const AdminHome = ({ navigation,route}:{ navigation: AdminNavigationProps,route:
                     <Pressable style={adhstyles.adhButton} onPress={() => navigation.navigate("Sensor Data")}>
                         <Text style={adhstyles.adhButtonTitle}>Data</Text>
                     </Pressable>
-                    <Pressable style={adhstyles.adhButton}>
-                        <Text style={adhstyles.adhButtonTitle} onPress={() => navigation.navigate("User List")}>User List</Text>
+                    <Pressable style={adhstyles.adhButton} onPress={() => navigation.navigate("User List")}>
+                        <Text style={adhstyles.adhButtonTitle} >User List</Text>
                     </Pressable>
                     <Pressable style={adhstyles.adhButton} onPress={() => navigation.navigate("Adminwashroom")}>
                         <Text style={adhstyles.adhButtonTitle}>Washroom List</Text>
                     </Pressable>
-                    <Pressable style={adhstyles.adhButton}>
-                        <Text style={adhstyles.adhButtonTitle} onPress={() => navigation.navigate("Report List")}>Reports</Text>
+                    <Pressable style={adhstyles.adhButton} onPress={() => navigation.navigate("Report List")}>
+                        <Text style={adhstyles.adhButtonTitle} >Reports</Text>
                     </Pressable>
                 </View>
             </View>
