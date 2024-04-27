@@ -16,6 +16,7 @@ import Washlist from './Washlist';
 import AdminWashlist from './AdminWashlist';
 import UserList from './UserList';
 import ReportList from './ReportList';
+import ReportStatusList from './ReportStatusList';
 
 const Stack = createStackNavigator();
 
@@ -178,8 +179,9 @@ type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   "Sensor Data": undefined;
-  Report: undefined;
+  Report: { Name: string; Email: string };
   Washroom: undefined;
+  "Report Status": { Name: string; Email: string };
 };
 
 type NavigationProps = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -208,14 +210,17 @@ function Logo({ navigation }: { navigation: NavigationProps }) {
   );
 }
 
-function UserH({ navigation }: { navigation: NavigationProps }) {
+function UserH({ navigation, route }: { navigation: NavigationProps, route: any }) {
   return (
     <View style={styles.startBody}>
       <Text style={styles.startTitle}>CleanPro</Text>
       <Text style={styles.startTagline}>Sustainable solution for Public Toilet</Text>
       <Text style={styles.startTagline}>Sanitation</Text>
-      <Pressable style={styles.LogButton} onPress={() => navigation.navigate("Report")}>
-        <Text style={styles.StartButtonTitle}>Report</Text>
+      <Pressable style={styles.LogButton} onPress={() => navigation.navigate("Report", { Name: route.params.Name, Email: route.params.Email })}>
+        <Text style={styles.StartButtonTitle}>Submit Report</Text>
+      </Pressable>
+      <Pressable style={styles.LogButton} onPress={() => navigation.navigate("Report Status", { Name: route.params.Name, Email: route.params.Email })}>
+        <Text style={styles.StartButtonTitle}>Check Report Status</Text>
       </Pressable>
     </View>
   );
@@ -294,6 +299,14 @@ function MyStack() {
       <Stack.Screen
         name="Map"
         component={Map}
+        options={{
+          headerTitleStyle: { display: 'none' },
+          headerBackAccessibilityLabel: "none",
+        }}
+      />
+      <Stack.Screen
+        name="Report Status"
+        component={ReportStatusList}
         options={{
           headerTitleStyle: { display: 'none' },
           headerBackAccessibilityLabel: "none",

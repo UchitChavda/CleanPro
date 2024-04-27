@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Searchbar, Button } from 'react-native-paper';
 import axios from 'axios';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 type UserwStackParamList = {
     "User Home": { Name: string; };
@@ -45,14 +44,13 @@ const Washlist = ({ navigation }: { navigation: WashNavigationProps }) => {
             keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}>
             <View style={wlstyles.wlBody}>
                 <View style={wlstyles.buttonSupView}>
-                    <Text style={wlstyles.Title}>Find Washroom</Text><FontAwesomeIcon name="check-circle" size={50} color="green" />
+                    <Text style={wlstyles.Title}>Find Washroom</Text> 
                     <View style={wlstyles.container}>
                         <Searchbar
                             placeholder='Search Washroom'
                             onChangeText={onChangeSearch}
                             value={searchQuery}
                             style={wlstyles.searchBar}
-                            // icon={() => <Icon name="search" size={20} color="black" />}
                         />
                         <View style={wlstyles.buttonContainer}>
                             <Button

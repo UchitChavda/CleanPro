@@ -10,7 +10,7 @@ type LoginStackParamList = {
   Login: undefined;
   Register: undefined;
   "Admin Home": { Name: string; }
-  "User Home": { Name: string; }
+  "User Home": { Name: string; Email:string }
 };
 
 type NavigationProps = StackNavigationProp<LoginStackParamList, 'Login'>;
@@ -49,7 +49,7 @@ const Login = ({ navigation }: { navigation: NavigationProps }) => {
       //   Alert.alert("Error", "Fill the credentials");
       // }
       if (userName === 'a' && password === 'p') {
-        navigation.navigate("User Home", { Name: 'Uchit' });
+        navigation.navigate("User Home", { Name: 'Uchit', Email:"chirayu@gmail.com" });
       } else {
         Alert.alert("Error", "Invalid username or password");
       }
