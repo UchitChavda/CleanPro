@@ -5,11 +5,9 @@ import Logo from './Screens/Logo';
 import Register from './Screens/Register';
 import Login from './Screens/Login';
 import SenGraph from './Screens/SenGraph';
-import FindWash from './Screens/FindWash';
 import 'react-native-reanimated';
 import AdminHome from './Screens/AdminHome';
 import Washlist from './Screens/Washlist';
-import Map from "./Screens/Map"
 import UserList from './Screens/UserList';
 
 AppRegistry.registerComponent(appName, () => App)

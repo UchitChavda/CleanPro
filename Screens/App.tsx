@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     display: 'flex',
   },
   StartButton: {
-    width: 150,
+    width: 200,
     backgroundColor: 'red',
     alignItems: 'center',
     height: 50,
@@ -148,13 +148,13 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   LogButton: {
-    width: 150,
+    width: 200,
     backgroundColor: 'red',
     alignItems: 'center',
     height: 50,
     alignSelf: 'center',
     borderRadius: 10,
-    marginTop: 100,
+    marginTop: 45,
   },
   RegButton: {
     width: 150,
@@ -199,7 +199,10 @@ function Logo({ navigation }: { navigation: NavigationProps }) {
       <Text style={styles.startTagline}>Sustainable solution for Public Toilet</Text>
       <Text style={styles.startTagline}>Sanitation</Text>
       <Pressable style={styles.LogButton} onPress={() => navigation.navigate("Login")}>
-        <Text style={styles.StartButtonTitle}>Start</Text>
+        <Text style={styles.StartButtonTitle}>Login</Text>
+        <Pressable style={styles.LogButton} onPress={() => navigation.navigate("Washroom")}>
+          <Text style={styles.StartButtonTitle}>Find Washroom</Text>
+        </Pressable>
       </Pressable>
     </View>
   );
@@ -213,9 +216,6 @@ function UserH({ navigation }: { navigation: NavigationProps }) {
       <Text style={styles.startTagline}>Sanitation</Text>
       <Pressable style={styles.LogButton} onPress={() => navigation.navigate("Report")}>
         <Text style={styles.StartButtonTitle}>Report</Text>
-      </Pressable>
-      <Pressable style={styles.LogButton} onPress={() => navigation.navigate("Washroom")}>
-        <Text style={styles.StartButtonTitle}>Washroom</Text>
       </Pressable>
     </View>
   );

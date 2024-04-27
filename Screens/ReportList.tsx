@@ -14,7 +14,6 @@ const fetchReportData = async () => {
     try {
         const response = await axios.get('http://192.168.0.102:8000/reportList');
         const values = response.data.Reports;
-        console.log(values)
         if (values==="No Reports"){
             Alert.alert("Error", "No Reports"); 
             return null

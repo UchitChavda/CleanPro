@@ -1,64 +1,117 @@
-import { View, Text, Pressable, StyleSheet} from 'react-native'
-import React from 'react'
+import { View, Text, Pressable, StyleSheet, Alert, KeyboardAvoidingView, Platform } from 'react-native'
+import React, { useState } from 'react'
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Searchbar, Button } from 'react-native-paper';
+import axios from 'axios';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
-type AdminStackParamList = {
-    Login: undefined;
-    "Admin Home": { Name: string; }
-    "Sensor Data": undefined;
-    "Adminwashroom": undefined;
+type UserwStackParamList = {
+    "User Home": { Name: string; };
+    "Washroom": undefined;
+    "Map": { longitude: Number, latitude: Number }
 };
 
-type AdminNavigationProps = StackNavigationProp<AdminStackParamList, "Admin Home">;
+type WashNavigationProps = StackNavigationProp<UserwStackParamList, "Washroom">;
 
-const Washlist = ({ navigation }) => {
+const Washlist = ({ navigation }: { navigation: WashNavigationProps }) => {
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchvalue, setSearchValue] = useState<any>(0);
+
+    const onChangeSearch = (query: any) => {
+        setSearchQuery(query);
+    };
+
+    const handleSearch = async () => {
+        if (searchQuery !== "") {
+            const response = await axios.post('http://192.168.0.102:8000/washroomDetails', `place=${searchQuery}`);
+            const values = response.data.Washrooms;
+            if (values === "Washroom not Found") {
+                setSearchValue(null);
+                Alert.alert("Error", "No Washroom at searched Place");
+                return;
+            }
+            setSearchValue(values);
+            return;
+        } else {
+            Alert.alert("Error", "No Place Entered");
+            return;
+        }
+    };
+
     return (
-        <View style={wlstyles.wlBody}>
-            <View style={wlstyles.buttonSupView}>
-                <Text style={wlstyles.Title}>Washlist</Text>
-                <View style={wlstyles.buttonView}>
-                    {
-                        location.map((loc) => {
-                            return (
-                                <Pressable style={wlstyles.wlButton} onPress={() => navigation.navigate("Map", {longitude: loc.longitude, latitude: loc.latitude})}>
-                                    <Text style={wlstyles.wlButtonTitle}>{loc.name}</Text>
-                                </Pressable>
-                            );
-                        })
-                    }
-
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}>
+            <View style={wlstyles.wlBody}>
+                <View style={wlstyles.buttonSupView}>
+                    <Text style={wlstyles.Title}>Find Washroom</Text><FontAwesomeIcon name="check-circle" size={50} color="green" />
+                    <View style={wlstyles.container}>
+                        <Searchbar
+                            placeholder='Search Washroom'
+                            onChangeText={onChangeSearch}
+                            value={searchQuery}
+                            style={wlstyles.searchBar}
+                            // icon={() => <Icon name="search" size={20} color="black" />}
+                        />
+                        <View style={wlstyles.buttonContainer}>
+                            <Button
+                                mode="contained"
+                                onPress={handleSearch}
+                                style={wlstyles.button}
+                            >
+                                Search
+                            </Button>
+                        </View>
+                    </View>
+                    <View style={wlstyles.buttonView}>
+                        {searchvalue !== null && searchvalue !== 0 && (
+                            <>
+                                <Text style={wlstyles.Subtitle}>Washrooms Available At:</Text>
+                                {searchvalue.map((item: any, index: any) => (
+                                    <Pressable key={index} style={wlstyles.wlButton} onPress={() => navigation.navigate("Map", { longitude: item.longitude, latitude: item.latitude })}>
+                                        <Text style={wlstyles.wlButtonTitle}>{item.name}</Text>
+                                    </Pressable>
+                                ))}
+                            </>
+                        )}
+                    </View>
                 </View>
             </View>
-        </View>
+        </KeyboardAvoidingView>
     )
 }
 
 const wlstyles = StyleSheet.create({
     Title: {
-        fontSize: 55,
+        fontSize: 50,
         fontWeight: '600',
         alignSelf: 'center',
-        // marginTop: 20,
         color: 'black',
         fontFamily: 'Times New Roman',
+        fontStyle: "italic",
+    },
+    Subtitle: {
+        fontSize: 25,
+        alignSelf: 'center',
+        color: 'black',
+        fontFamily: 'Times New Roman',
+        fontStyle: "italic",
     },
     buttonView: {
-        // backgroundColor: "green",
+        flex: 1,
         width: '90%',
-        display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-around',
-        height: "40%",
-        marginTop: 30
+        marginTop: '2%',
     },
     wlBody: {
+        flex: 1,
         backgroundColor: 'white',
-        height: "100%"
     },
     buttonSupView: {
+        flex: 1,
         backgroundColor: "White",
-        height: "100%",
         alignItems: 'center',
-        // justifyContent: 'center'
     },
     wlButton: {
         width: "100%",
@@ -69,37 +122,37 @@ const wlstyles = StyleSheet.create({
         alignSelf: 'center',
         borderRadius: 10,
         justifyContent: 'center',
-        elevation: 20
+        elevation: 20,
+        marginTop: '1.5%',
     },
     wlButtonTitle: {
         fontSize: 20,
         fontWeight: '400',
-        // marginTop: 10,
         color: 'black',
-    }
-});
+    },
+    container: {
+        width: '90%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    searchBar: {
+        backgroundColor: "whitesmoke",
+        flex: 1,
+    },
+    buttonContainer: {
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        marginRight: '1.75%',
+        width: '5.95%',
+    },
+    button: {
+        backgroundColor: "red",
+    },
 
-const location = [
-    {
-        name: 'Thane',
-        latitude: 19.215946,
-        longitude: 72.971108
-    },
-    {
-        name: "Dadar",
-        latitude: 19.014736,
-        longitude: 72.847349
-    },
-    {
-        name: "Russia",
-        latitude: 61.402886,
-        longitude: 99.695681
-    },
-    {
-        name: "United Kingdom",
-        latitude: 54.372500,
-        longitude: -1.955495
-    },
-]
+});
 
 export default Washlist

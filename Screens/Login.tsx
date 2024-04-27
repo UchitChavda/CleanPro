@@ -49,7 +49,7 @@ const Login = ({ navigation }: { navigation: NavigationProps }) => {
       //   Alert.alert("Error", "Fill the credentials");
       // }
       if (userName === 'a' && password === 'p') {
-        navigation.navigate("Admin Home", { Name: 'Uchit' });
+        navigation.navigate("User Home", { Name: 'Uchit' });
       } else {
         Alert.alert("Error", "Invalid username or password");
       }
