@@ -19,13 +19,16 @@ const AdminHome = ({ navigation,route}:{ navigation: AdminNavigationProps,route:
                 <Text style={adhstyles.Title}>Welcome, {Name}</Text>
                 <View style={adhstyles.buttonView}>
                     <Pressable style={adhstyles.adhButton} onPress={() => navigation.navigate("Sensor Data")}>
-                        <Text style={adhstyles.adhButtonTitle}>Sensor Data</Text>
+                        <Text style={adhstyles.adhButtonTitle}>Data</Text>
                     </Pressable>
                     <Pressable style={adhstyles.adhButton}>
                         <Text style={adhstyles.adhButtonTitle}>User List</Text>
                     </Pressable>
                     <Pressable style={adhstyles.adhButton} onPress={() => navigation.navigate("Adminwashroom")}>
                         <Text style={adhstyles.adhButtonTitle}>Washroom List</Text>
+                    </Pressable>
+                    <Pressable style={adhstyles.adhButton}>
+                        <Text style={adhstyles.adhButtonTitle}>Reports</Text>
                     </Pressable>
                 </View>
             </View>
@@ -49,7 +52,7 @@ const adhstyles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-around',
-        height: "30%"
+        height: "35%"
     },
     adhBody: {
         backgroundColor: 'white',

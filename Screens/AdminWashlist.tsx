@@ -34,27 +34,29 @@ const AdminWashlist = ({ navigation }: { navigation: AdminWashNavigationProps })
         };
         fetchSensorData();
     }, []);
-    if (washroomvalue!==0) {
-        return (
-            <View style={wlstyles.wlBody}>
-                <View style={wlstyles.buttonSupView}>
-                    <Text style={wlstyles.Title}>Washroom List</Text>
-                    <View style={wlstyles.buttonView}>
-                        {
-                            washroomvalue.map((item:any,index:any) => {
-                                return (
-                                    <Pressable key={index} style={wlstyles.wlButton} onPress={() => navigation.navigate("Map", {longitude: item.longitude, latitude: item.latitude})}>
-                                        <Text style={wlstyles.wlButtonTitle}>{item.name}</Text>
-                                        <Text style={wlstyles.wlButtonTitle}>{item.place}</Text>
-                                    </Pressable>
-                                );
-                            })
-                        }
-                    </View>
+    return (
+        <View style={wlstyles.wlBody}>
+            <View style={wlstyles.buttonSupView}>
+                <Text style={wlstyles.Title}>Washroom List</Text>
+                <View style={wlstyles.buttonView}>
+                    <Pressable style={wlstyles.wlButton} >
+                        <Text style={wlstyles.wlButtonTitle}>Add</Text>
+                    </Pressable>
+                    <Pressable style={wlstyles.wlButton} >
+                        <Text style={wlstyles.wlButtonTitle}>Delete</Text>
+                    </Pressable>
+                    {washroomvalue !== 0 && (
+                        washroomvalue.map((item: any, index: any) => (
+                            <Pressable key={index} style={wlstyles.wlButton} onPress={() => navigation.navigate("Map", { longitude: item.longitude, latitude: item.latitude })}>
+                                <Text style={wlstyles.wlButtonTitle}>{item.name}</Text>
+                                <Text style={wlstyles.wlButtonTitle}>{item.place}</Text>
+                            </Pressable>
+                        ))
+                    )}
                 </View>
             </View>
-        )
-    }
+        </View>
+    )
 }
 
 const wlstyles = StyleSheet.create({
@@ -64,7 +66,7 @@ const wlstyles = StyleSheet.create({
         alignSelf: 'center',
         color: 'black',
         fontFamily: 'Times New Roman',
-        fontStyle:"italic",
+        fontStyle: "italic",
     },
     buttonView: {
         width: '95%',
@@ -99,7 +101,7 @@ const wlstyles = StyleSheet.create({
         fontWeight: '200',
         color: 'black',
         fontFamily: 'Times New Roman',
-        fontStyle:"italic",
+        fontStyle: "italic",
     }
 });
 
