@@ -1,11 +1,23 @@
-import { View, Text, Pressable, StyleSheet,Alert } from 'react-native'
+import { View, Text, Pressable, StyleSheet, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+type UserListStackParamList = {
+    "Admin Home": { Name: string; }
+    "User List": undefined;
+};
+
+type UListNavigationProps = StackNavigationProp<UserListStackParamList, "User List">;
 
 const fetchUserData = async () => {
     try {
         const response = await axios.get('http://192.168.0.102:8000/userList');
         const values = response.data.Users;
+        if (values==="No Users"){
+            Alert.alert("Error", "No Users"); 
+            return null
+        }
         return values;
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -13,26 +25,45 @@ const fetchUserData = async () => {
     }
 };
 
-const handlePress = (item:any) => { 
+const handlePress = (item: any, navigation: any) => {
     Alert.alert(
-      'Title',
-      'Message',
-      [
-        {
-          text: 'Button 1',
-          style:usrlStyles.usrlListItemButtonText,
-          onPress: () => {
-            // Execute function for Button 1
-            console.log('Button 1 pressed',item);
-            // Call your function here
-          },
-        },
-        // Add more buttons as needed
-      ],
+        'Delete',
+        'Are you sure, you want to delete this user?',
+        [
+            {
+                text: 'Confirm',
+                onPress: () => {
+                    handleDelete(item, navigation)
+                },
+            },
+            {
+                text: 'Cancel',
+                onPress: () => { },
+                style: 'destructive',
+            }
+        ],
     );
-  };
+};
 
-const UserList = ({ navigation }) => {
+
+const handleDelete = async (item: any, navigation: any) => {
+    try {
+        const Email = item.Email;
+        const response = await axios.post('http://192.168.0.102:8000/deleteUser', `email=${Email}`);
+        if (response.data.message === "User Deleted") {
+            navigation.replace("User List");
+        }
+        if (response.data.message === "User Cannot be Deleted") {
+            Alert.alert("Error", "Unable To delete the User");
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        Alert.alert("Error", "Unable To delete the User");
+        return null;
+    }
+};
+
+const UserList = ({ navigation }: { navigation: UListNavigationProps }) => {
     const [uservalue, setUserValue] = useState<any>(0);
 
     useEffect(() => {
@@ -52,7 +83,7 @@ const UserList = ({ navigation }) => {
                             <View style={usrlStyles.usrlListItem}>
                                 <Text style={usrlStyles.usrlListItemText}>{item.Name}</Text>
                                 <Text style={usrlStyles.usrlListItemText}>{item.Email}</Text>
-                                <Pressable style={usrlStyles.usrlListItemDelButton} onPress={() => handlePress(item)}>
+                                <Pressable style={usrlStyles.usrlListItemDelButton} onPress={() => handlePress(item, navigation)}>
                                     <Text style={usrlStyles.usrlListItemButtonText}>Delete</Text>
                                 </Pressable>
                             </View>

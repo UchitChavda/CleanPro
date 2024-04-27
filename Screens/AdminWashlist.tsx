@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet,Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
@@ -15,6 +15,10 @@ const fetchWashroomData = async () => {
     try {
         const response = await axios.get('http://192.168.0.102:8000/washroomList');
         const values = response.data.Washrooms;
+        if (values==="No Washroom"){
+            Alert.alert("Error", "No Washrooms"); 
+            return null
+        }
         return values;
     } catch (error) {
         console.error('Error fetching data:', error);

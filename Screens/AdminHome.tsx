@@ -30,7 +30,10 @@ const AdminHome = ({ navigation,route}:{ navigation: AdminNavigationProps,route:
                         <Text style={adhstyles.adhButtonTitle}>Washroom List</Text>
                     </Pressable>
                     <Pressable style={adhstyles.adhButton} onPress={() => navigation.navigate("Report List")}>
-                        <Text style={adhstyles.adhButtonTitle} >Reports</Text>
+                        <Text style={adhstyles.adhButtonTitle} >Submitted Reports</Text>
+                    </Pressable>
+                    <Pressable style={adhstyles.adhButton}>
+                        <Text style={adhstyles.adhButtonTitle} >Completed Reports</Text>
                     </Pressable>
                 </View>
             </View>
@@ -67,7 +70,7 @@ const adhstyles = StyleSheet.create({
         justifyContent: 'center'
     },
     adhButton: {
-        width: 150,
+        width: 200,
         backgroundColor: 'red',
         alignItems: 'center',
         height: 50,
