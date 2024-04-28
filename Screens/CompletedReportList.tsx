@@ -5,14 +5,14 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 type ReportListStackParamList = {
     "Admin Home": { Name: string; }
-    "Report List": undefined;
+    "Complete Report List": undefined;
 };
 
-type RListNavigationProps = StackNavigationProp<ReportListStackParamList, "Report List">;
+type RListNavigationProps = StackNavigationProp<ReportListStackParamList, "Complete Report List">;
 
 const fetchReportData = async () => {
     try {
-        const response = await axios.get('http://192.168.204.152:8000/reportList');
+        const response = await axios.get('http://192.168.204.152:8000/completedReportList');
         const values = response.data.Reports;
         if (values === "No Reports") {
             Alert.alert("Error", "No Reports");
@@ -52,9 +52,9 @@ const handleDelete = async (item: any, navigation: any) => {
         const address=item.Address;
         const title=item.Title;
         const desciption=item.Description;
-        const response = await axios.post('http://192.168.204.152:8000/deleteReport',`email=${email}&name=${name}&add=${address}&title=${title}&des=${desciption}`);
+        const response = await axios.post('http://192.168.204.152:8000/deleteCompReport',`email=${email}&name=${name}&add=${address}&title=${title}&des=${desciption}`);
         if (response.data.message === "Report Details Deleted") {
-            navigation.replace("Report List");
+            navigation.replace("Complete Report List");
         }
         else {
             Alert.alert("Error", "Unable To delete the Report");
@@ -66,45 +66,7 @@ const handleDelete = async (item: any, navigation: any) => {
     }
 };
 
-const handleConfirmPress = (item: any, navigation: any) => {
-    Alert.alert(
-        'Change Status',
-        'Are you sure, you want to mark this report as completed?',
-        [
-            {
-                text: 'Confirm',
-                onPress: () => {
-                    handlestatus(item, navigation)
-                },
-            },
-            {
-                text: 'Cancel',
-                onPress: () => { },
-                style: 'destructive',
-            }
-        ],
-    );
-};
-
-const handlestatus = async (item: any, navigation: any) => {
-    try {
-        console.log(item);
-        // const Email = item.Email;
-        // const response = await axios.post('http://192.168.204.152:8000/deleteUser', `email=${Email}`);
-        // if (response.data.message === "User Deleted") {
-        //     navigation.replace("User List");
-        // }
-        // if (response.data.message === "User Cannot be Deleted") {
-        //     Alert.alert("Error", "Unable To change the Report");
-        // }
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        Alert.alert("Error", "Unable To change the Report");
-        return null;
-    }
-};
-
-const ReportList = ({ navigation }: { navigation: RListNavigationProps }) => {
+const CompletedReportList = ({ navigation }: { navigation: RListNavigationProps }) => {
     const [reportvalue, setReportValue] = useState<any>(0);
 
     useEffect(() => {
@@ -128,9 +90,6 @@ const ReportList = ({ navigation }: { navigation: RListNavigationProps }) => {
                                 <Text style={rptlStyles.rptlListItemText}>Washroom Address: {item.Address}</Text>
                                 <Text style={rptlStyles.rptlListItemText}>Problem: {item.Title}</Text>
                                 <Text style={rptlStyles.rptlListItemText}>Description: {item.Description}</Text>
-                                <Pressable style={rptlStyles.rptlListItemConButton} onPress={() => handleConfirmPress(item, navigation)}>
-                                    <Text style={rptlStyles.rptlListItemButtonText}>Completed</Text>
-                                </Pressable>
                                 <Pressable style={rptlStyles.rptlListItemDelButton} onPress={() => handlePress(item, navigation)}>
                                     <Text style={rptlStyles.rptlListItemButtonText}>Delete</Text>
                                 </Pressable>
@@ -197,4 +156,4 @@ const rptlStyles = StyleSheet.create({
     }
 })
 
-export default ReportList
+export default CompletedReportList

@@ -17,6 +17,7 @@ import AdminWashlist from './AdminWashlist';
 import UserList from './UserList';
 import ReportList from './ReportList';
 import ReportStatusList from './ReportStatusList';
+import CompletedReportList from './CompletedReportList';
 
 const Stack = createStackNavigator();
 
@@ -355,6 +356,14 @@ function MyStack() {
       <Stack.Screen
         name="Report List"
         component={ReportList}
+        options={{
+          headerTitleStyle: { display: 'none' },
+          headerBackAccessibilityLabel: "none",
+        }}
+      />
+      <Stack.Screen
+        name="Complete Report List"
+        component={CompletedReportList}
         options={{
           headerTitleStyle: { display: 'none' },
           headerBackAccessibilityLabel: "none",

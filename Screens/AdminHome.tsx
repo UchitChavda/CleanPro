@@ -9,6 +9,7 @@ type AdminStackParamList = {
     "Adminwashroom": undefined;
     "User List": undefined;
     "Report List": undefined;
+    "Complete Report List": undefined;
 };
 
 type AdminNavigationProps = StackNavigationProp<AdminStackParamList, "Admin Home">;
@@ -32,7 +33,7 @@ const AdminHome = ({ navigation,route}:{ navigation: AdminNavigationProps,route:
                     <Pressable style={adhstyles.adhButton} onPress={() => navigation.navigate("Report List")}>
                         <Text style={adhstyles.adhButtonTitle} >Submitted Reports</Text>
                     </Pressable>
-                    <Pressable style={adhstyles.adhButton}>
+                    <Pressable style={adhstyles.adhButton} onPress={() => navigation.navigate("Complete Report List")}>
                         <Text style={adhstyles.adhButtonTitle} >Completed Reports</Text>
                     </Pressable>
                 </View>
