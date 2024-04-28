@@ -15,7 +15,7 @@ const fetchReportData = async () => {
         const response = await axios.get('http://192.168.204.152:8000/reportList');
         const values = response.data.Reports;
         if (values === "No Reports") {
-            Alert.alert("Error", "No Reports");
+            Alert.alert("No Reports", "No Reports has been submitted");
             return null
         }
         return values;
@@ -89,14 +89,18 @@ const handleConfirmPress = (item: any, navigation: any) => {
 const handlestatus = async (item: any, navigation: any) => {
     try {
         console.log(item);
-        // const Email = item.Email;
-        // const response = await axios.post('http://192.168.204.152:8000/deleteUser', `email=${Email}`);
-        // if (response.data.message === "User Deleted") {
-        //     navigation.replace("User List");
-        // }
-        // if (response.data.message === "User Cannot be Deleted") {
-        //     Alert.alert("Error", "Unable To change the Report");
-        // }
+        const email = item.Email;
+        const name=item.Name;
+        const address=item.Address;
+        const title=item.Title;
+        const desciption=item.Description;
+        const response = await axios.post('http://192.168.204.152:8000/updateReportStatus',`email=${email}&name=${name}&add=${address}&title=${title}&des=${desciption}`);
+        if (response.data.message === "Report Details Updated") {
+            navigation.replace("Report List");
+        }
+        else {
+            Alert.alert("Error", "Unable To update the Report");
+        }
     } catch (error) {
         console.error('Error fetching data:', error);
         Alert.alert("Error", "Unable To change the Report");
