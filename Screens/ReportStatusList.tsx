@@ -83,13 +83,15 @@ const rptlStyles = StyleSheet.create({
     rptlListItem: {
         backgroundColor: "white",
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-between',
-        height: 50,
-        alignItems: 'center',
+        // height: 50,
+        // alignItems: 'center',
         elevation: 20,
         borderRadius: 10,
-        marginBottom: 20
+        marginBottom: 20,
+        paddingTop: 10,
+        paddingBottom: 10
     },
     rptlListItemText: {
         color: "black",

@@ -50,7 +50,11 @@ const Login = ({ navigation }: { navigation: NavigationProps }) => {
       // }
       if (userName === 'a' && password === 'p') {
         navigation.navigate("Admin Home", { Name: 'Uchit'});
-      } else {
+      }
+      else if (userName === 'u' && password === 'p') {
+        navigation.navigate("User Home", { Name: 'Uchit'});
+      } 
+      else {
         Alert.alert("Error", "Invalid username or password");
       }
     } catch (error) {
