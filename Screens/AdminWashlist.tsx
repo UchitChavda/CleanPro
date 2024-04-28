@@ -15,7 +15,7 @@ type AdminWashNavigationProps = StackNavigationProp<AdminWashStackParamList, "Ad
 
 const fetchWashroomData = async () => {
     try {
-        const response = await axios.get('http://192.168.204.152:8000/washroomList');
+        const response = await axios.get('http://192.168.0.104:8000/washroomList');
         const values = response.data.Washrooms;
         if (values === "No Washroom") {
             Alert.alert("Error", "No Washrooms");
@@ -53,11 +53,11 @@ const handleDelete = async (item: any, navigation: any) => {
     try {
         const name = item.name;
         const place = item.place;
-        const response = await axios.post('http://192.168.204.152:8000/deleteWashroom',`name=${name}&place=${place}`);
+        const response = await axios.post('http://192.168.0.104:8000/deleteWashroom', `name=${name}&place=${place}`);
         if (response.data.message === "Washroom Details Deleted") {
             navigation.replace("Adminwashroom");
         }
-       else {
+        else {
             Alert.alert("Error", `${response.data.message}`);
         }
     } catch (error) {
@@ -78,29 +78,34 @@ const AdminWashlist = ({ navigation }: { navigation: AdminWashNavigationProps })
     }, []);
 
     return (
-        <ScrollView>
-            <View style={wlstyles.wlBody}>
-                <View style={wlstyles.buttonSupView}>
-                    <Text style={wlstyles.Title}>Washroom List</Text>
-                    <View style={wlstyles.buttonView}>
-                        <Pressable style={wlstyles.wlButton} onPress={() => navigation.navigate("Washadd")}>
-                            <Text style={wlstyles.wlButtonTitle}>Add</Text>
-                        </Pressable>
+
+        <View style={wlstyles.wlBody}>
+            <View style={wlstyles.buttonSupView}>
+                <Text style={wlstyles.Title}>Washroom List</Text>
+                <View style={wlstyles.buttonView}>
+                    <Pressable style={wlstyles.wlButton} onPress={() => navigation.navigate("Washadd")}>
+                        <Text style={wlstyles.wlButtonTitle}>Add Washroom</Text>
+                    </Pressable>
+                    <View style={wlstyles.wlListViews}>
                         {washroomvalue !== null && washroomvalue !== 0 && (
                             washroomvalue.map((item: any, index: any) => (
-                                <Pressable key={index} style={wlstyles.wlButton} onPress={() => navigation.navigate("Map", { longitude: item.longitude, latitude: item.latitude })}>
-                                    <Text style={wlstyles.wlButtonTitle}>{item.name}</Text>
-                                    <Text style={wlstyles.wlButtonTitle}>{item.place}</Text>
-                                    <Pressable style={wlstyles.usrlListItemDelButton} onPress={() => handlePress(item, navigation)}>
-                                        <Text style={wlstyles.usrlListItemButtonText}>Delete</Text>
-                                    </Pressable>
+                                <Pressable key={index} style={wlstyles.wlButtonList} onPress={() => navigation.navigate("Map", { longitude: item.longitude, latitude: item.latitude })}>
+                                    <View>
+                                        <Text style={wlstyles.wlButtonTitle}>{item.name}</Text>
+                                        <Text style={wlstyles.wlButtonTitle}>{item.place}</Text>
+                                    </View>
+                                    <View>
+                                        <Pressable style={wlstyles.usrlListItemDelButton} onPress={() => handlePress(item, navigation)}>
+                                            <Text style={wlstyles.usrlListItemButtonText}>Delete</Text>
+                                        </Pressable>
+                                    </View>
                                 </Pressable>
                             ))
                         )}
                     </View>
                 </View>
             </View>
-        </ScrollView>
+        </View>
     )
 }
 
@@ -117,7 +122,7 @@ const wlstyles = StyleSheet.create({
         width: '95%',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-around',
+        // justifyContent: 'space-around',
         height: "100%",
         marginTop: 50
     },
@@ -141,12 +146,25 @@ const wlstyles = StyleSheet.create({
         justifyContent: 'center',
         elevation: 20,
     },
+    wlButtonList: {
+        width: "100%",
+        display: 'flex',
+        backgroundColor: 'white',
+        color: 'black',
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderRadius: 10,
+        justifyContent: 'space-between',
+        elevation: 20,
+        marginBottom: 20
+    },
     wlButtonTitle: {
         fontSize: 20,
         fontWeight: '200',
         color: 'black',
         fontFamily: 'Times New Roman',
         fontStyle: "italic",
+        marginLeft: 20
     },
     usrlListItemDelButton: {
         backgroundColor: 'red',
@@ -156,6 +174,10 @@ const wlstyles = StyleSheet.create({
     },
     usrlListItemButtonText: {
         color: "white"
+    },
+    wlListViews: {
+        width: "100%",
+        marginTop: 20
     }
 
 });

@@ -45,7 +45,7 @@ const Report = ({ navigation, route }: { navigation: RListNavigationProps, route
 
   const handleClick = async () => {
     try {
-      const response = await axios.post('http://192.168.204.152:8000/addReport', `email=${email}&name=${washroomName}&add=${washroomAddress}&title=${problemTitle}&des=${problemDescription}`);
+      const response = await axios.post('http://192.168.0.104:8000/addReport', `email=${email}&name=${washroomName}&add=${washroomAddress}&title=${problemTitle}&des=${problemDescription}`);
       const values = response.data.message;
       if (values === "Report Created Successfully") {
         Alert.alert("Report Created", "Details for the report submitted successfully", [{ text: 'Ok', onPress: () => { reload() } }]);

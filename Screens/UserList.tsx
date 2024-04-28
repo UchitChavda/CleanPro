@@ -12,10 +12,10 @@ type UListNavigationProps = StackNavigationProp<UserListStackParamList, "User Li
 
 const fetchUserData = async () => {
     try {
-        const response = await axios.get('http://192.168.204.152:8000/userList');
+        const response = await axios.get('http://192.168.0.104:8000/userList');
         const values = response.data.Users;
-        if (values==="No Users"){
-            Alert.alert("Error", "No Users"); 
+        if (values === "No Users") {
+            Alert.alert("Error", "No Users");
             return null
         }
         return values;
@@ -49,7 +49,7 @@ const handlePress = (item: any, navigation: any) => {
 const handleDelete = async (item: any, navigation: any) => {
     try {
         const Email = item.Email;
-        const response = await axios.post('http://192.168.204.152:8000/deleteUser', `email=${Email}`);
+        const response = await axios.post('http://192.168.0.104:8000/deleteUser', `email=${Email}`);
         if (response.data.message === "User Deleted") {
             navigation.replace("User List");
         }
@@ -80,11 +80,15 @@ const UserList = ({ navigation }: { navigation: UListNavigationProps }) => {
                     uservalue.map((item: any, index: any) => (
                         <View style={usrlStyles.usrlListView} key={index}>
                             <View style={usrlStyles.usrlListItem}>
-                                <Text style={usrlStyles.usrlListItemText}>{item.Name}</Text>
-                                <Text style={usrlStyles.usrlListItemText}>{item.Email}</Text>
-                                <Pressable style={usrlStyles.usrlListItemDelButton} onPress={() => handlePress(item, navigation)}>
-                                    <Text style={usrlStyles.usrlListItemButtonText}>Delete</Text>
-                                </Pressable>
+                                <View>
+                                    <Text style={usrlStyles.usrlListItemText}>{item.Name}</Text>
+                                    <Text style={usrlStyles.usrlListItemText}>{item.Email}</Text>
+                                </View>
+                                <View>
+                                    <Pressable style={usrlStyles.usrlListItemDelButton} onPress={() => handlePress(item, navigation)}>
+                                        <Text style={usrlStyles.usrlListItemButtonText}>Delete</Text>
+                                    </Pressable>
+                                </View>
                             </View>
                         </View>
                     ))
@@ -120,11 +124,13 @@ const usrlStyles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        height: 50,
+        // height: 50,
         alignItems: 'center',
         elevation: 20,
         borderRadius: 10,
-        marginBottom: 20
+        marginBottom: 20,
+        paddingTop: 7,
+        paddingBottom: 7
     },
     usrlListItemText: {
         marginLeft: 20,

@@ -22,7 +22,7 @@ const Washlist = ({ navigation }: { navigation: WashNavigationProps }) => {
 
     const handleSearch = async () => {
         if (searchQuery !== "") {
-            const response = await axios.post('http://192.168.204.152:8000/washroomDetails', `place=${searchQuery}`);
+            const response = await axios.post('http://192.168.0.104:8000/washroomDetails', `place=${searchQuery}`);
             const values = response.data.Washrooms;
             if (values === "Washroom not Found") {
                 setSearchValue(null);
@@ -105,6 +105,7 @@ const wlstyles = StyleSheet.create({
     wlBody: {
         flex: 1,
         backgroundColor: 'white',
+        width: "100%"
     },
     buttonSupView: {
         flex: 1,
@@ -136,16 +137,13 @@ const wlstyles = StyleSheet.create({
     },
     searchBar: {
         backgroundColor: "whitesmoke",
-        flex: 1,
+        width: "100%"
     },
     buttonContainer: {
         position: 'absolute',
-        right: 0,
-        top: 0,
-        bottom: 0,
+        right: 15,
         justifyContent: 'center',
-        marginRight: '1.75%',
-        width: '5.95%',
+        width: '35.95%',
     },
     button: {
         backgroundColor: "red",

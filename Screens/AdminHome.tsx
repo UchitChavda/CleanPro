@@ -57,8 +57,9 @@ const adhstyles = StyleSheet.create({
         width: '50%',
         display: 'flex',
         alignItems: 'center',
+        flexDirection: 'column',
         justifyContent: 'space-around',
-        height: "35%"
+        height: "50%"
     },
     adhBody: {
         backgroundColor: 'white',

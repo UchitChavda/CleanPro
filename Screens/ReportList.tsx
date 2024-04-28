@@ -2,6 +2,8 @@ import { View, Text, Pressable, StyleSheet, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView } from 'react-native-gesture-handler';
 
 type ReportListStackParamList = {
     "Admin Home": { Name: string; }
@@ -12,7 +14,7 @@ type RListNavigationProps = StackNavigationProp<ReportListStackParamList, "Repor
 
 const fetchReportData = async () => {
     try {
-        const response = await axios.get('http://192.168.204.152:8000/reportList');
+        const response = await axios.get('http://192.168.0.104:8000/reportList');
         const values = response.data.Reports;
         if (values === "No Reports") {
             Alert.alert("No Reports", "No Reports has been submitted");
@@ -48,11 +50,11 @@ const handlePress = (item: any, navigation: any) => {
 const handleDelete = async (item: any, navigation: any) => {
     try {
         const email = item.Email;
-        const name=item.Name;
-        const address=item.Address;
-        const title=item.Title;
-        const desciption=item.Description;
-        const response = await axios.post('http://192.168.204.152:8000/deleteReport',`email=${email}&name=${name}&add=${address}&title=${title}&des=${desciption}`);
+        const name = item.Name;
+        const address = item.Address;
+        const title = item.Title;
+        const desciption = item.Description;
+        const response = await axios.post('http://192.168.0.104:8000/deleteReport', `email=${email}&name=${name}&add=${address}&title=${title}&des=${desciption}`);
         if (response.data.message === "Report Details Deleted") {
             navigation.replace("Report List");
         }
@@ -89,11 +91,11 @@ const handlestatus = async (item: any, navigation: any) => {
     try {
         console.log(item);
         const email = item.Email;
-        const name=item.Name;
-        const address=item.Address;
-        const title=item.Title;
-        const desciption=item.Description;
-        const response = await axios.post('http://192.168.204.152:8000/updateReportStatus',`email=${email}&name=${name}&add=${address}&title=${title}&des=${desciption}`);
+        const name = item.Name;
+        const address = item.Address;
+        const title = item.Title;
+        const desciption = item.Description;
+        const response = await axios.post('http://192.168.0.104:8000/updateReportStatus', `email=${email}&name=${name}&add=${address}&title=${title}&des=${desciption}`);
         if (response.data.message === "Report Details Updated") {
             navigation.replace("Report List");
         }
@@ -121,25 +123,33 @@ const ReportList = ({ navigation }: { navigation: RListNavigationProps }) => {
         <View style={rptlStyles.usrBody}>
             <View style={rptlStyles.rptlMainView}>
                 <Text style={rptlStyles.rptlTitle}>Submitted Report List</Text>
-                {reportvalue !== null && reportvalue !== 0 && (
-                    reportvalue.map((item: any, index: any) => (
-                        <View style={rptlStyles.rptlListView} key={index}>
-                            <View style={rptlStyles.rptlListItem}>
-                                <Text style={rptlStyles.rptlListItemText}>Report By: {item.Email}</Text>
-                                <Text style={rptlStyles.rptlListItemText}>Washroom Name: {item.Name}</Text>
-                                <Text style={rptlStyles.rptlListItemText}>Washroom Address: {item.Address}</Text>
-                                <Text style={rptlStyles.rptlListItemText}>Problem: {item.Title}</Text>
-                                <Text style={rptlStyles.rptlListItemText}>Description: {item.Description}</Text>
-                                <Pressable style={rptlStyles.rptlListItemConButton} onPress={() => handleConfirmPress(item, navigation)}>
-                                    <Text style={rptlStyles.rptlListItemButtonText}>Completed</Text>
-                                </Pressable>
-                                <Pressable style={rptlStyles.rptlListItemDelButton} onPress={() => handlePress(item, navigation)}>
-                                    <Text style={rptlStyles.rptlListItemButtonText}>Delete</Text>
-                                </Pressable>
-                            </View>
-                        </View>
-                    ))
-                )}
+                <SafeAreaView style={rptlStyles.safeAreaView}>
+                    <ScrollView style={rptlStyles.scrollView}>
+                        {reportvalue !== null && reportvalue !== 0 && (
+                            reportvalue.map((item: any, index: any) => (
+                                <View style={rptlStyles.rptlListView} key={index}>
+                                    <View style={rptlStyles.rptlListItem}>
+                                        <View>
+                                            <Text style={rptlStyles.rptlListItemText}>Report By: {item.Email}</Text>
+                                            <Text style={rptlStyles.rptlListItemText}>Washroom Name: {item.Name}</Text>
+                                            <Text style={rptlStyles.rptlListItemText}>Washroom Address: {item.Address}</Text>
+                                            <Text style={rptlStyles.rptlListItemText}>Problem: {item.Title}</Text>
+                                            <Text style={rptlStyles.rptlListItemText}>Description: {item.Description}</Text>
+                                        </View>
+                                        <View style={rptlStyles.rplButtonView}>
+                                            <Pressable style={rptlStyles.rptlListItemConButton} onPress={() => handleConfirmPress(item, navigation)}>
+                                                <Text style={rptlStyles.rptlListItemButtonText}>Completed</Text>
+                                            </Pressable>
+                                            <Pressable style={rptlStyles.rptlListItemDelButton} onPress={() => handlePress(item, navigation)}>
+                                                <Text style={rptlStyles.rptlListItemButtonText}>Delete</Text>
+                                            </Pressable>
+                                        </View>
+                                    </View>
+                                </View>
+                            ))
+                        )}
+                    </ScrollView>
+                </SafeAreaView>
             </View>
         </View>
     )
@@ -169,33 +179,57 @@ const rptlStyles = StyleSheet.create({
     rptlListItem: {
         backgroundColor: "white",
         display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        height: 50,
-        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        // alignItems: 'center',
         elevation: 20,
         borderRadius: 10,
-        marginBottom: 20
+        marginBottom: 20,
+        paddingTop: 10,
+        paddingBottom: 20
     },
     rptlListItemText: {
         color: "black",
         marginLeft: 20,
-        fontSize: 20
+        fontSize: 20,
+        justifyContent: 'flex-start',
+        margin: 2.5
     },
     rptlListItemDelButton: {
         backgroundColor: 'red',
         marginRight: 20,
         padding: 5,
-        borderRadius: 5
+        borderRadius: 5,
+        width: 100
     },
     rptlListItemConButton: {
         backgroundColor: 'green',
         marginRight: 20,
         padding: 5,
-        borderRadius: 5
+        borderRadius: 5,
+        width: 100,
     },
     rptlListItemButtonText: {
-        color: "white"
+        color: "white",
+        alignSelf: 'center'
+    },
+    rplButtonView: {
+        marginTop: 10,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 10,
+        width: "100%"
+    },
+    scrollView: {
+        width: "100%",
+        marginBottom: 170
+    },
+    safeAreaView: {
+        margin: 0,
+        width: "100%",
+        marginLeft: 40,
     }
 })
 

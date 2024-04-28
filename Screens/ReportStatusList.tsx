@@ -12,7 +12,7 @@ type RListNavigationProps = StackNavigationProp<ReportListStackParamList, "Repor
 
 const fetchReportData = async (email:any) => {
     try {
-        const response = await axios.post('http://192.168.204.152:8000/userReport',`email=${email}`);
+        const response = await axios.post('http://192.168.0.104:8000/userReport',`email=${email}`);
         const values = response.data.Reports;
         if (values === "No Reports") {
             Alert.alert("Error", "No Reports");

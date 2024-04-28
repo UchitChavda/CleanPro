@@ -106,7 +106,7 @@ const Register = ({ navigation }: { navigation: RegisterListNavigationProps }) =
         Alert.alert('Passwords do not match.');
         return;
       } else {
-        const response = await axios.post('http://192.168.204.152:8000/Signup', `FName=${firstName}&LName=${lastName}&Email=${email}&Mob=${mobile}&Pwd=${password}&Role="User"`);
+        const response = await axios.post('http://192.168.0.104:8000/Signup', `FName=${firstName}&LName=${lastName}&Email=${email}&Mob=${mobile}&Pwd=${password}&Role="User"`);
         const values = response.data.message;
         if (values==="Created Successfully"){
           Alert.alert("Signup Successful", "Login Id has been created successfully",[{text: 'Confirm',onPress: () => {navigation.navigate("Login")},},]); 

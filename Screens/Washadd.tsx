@@ -66,7 +66,7 @@ const Washadd = ({ navigation }: { navigation: AddwashListNavigationProps }) => 
         Alert.alert('Error', 'Please enter the longitude.');
         return;
       }
-      const response = await axios.post('http://192.168.204.152:8000/addWashroom', `name=${washroomName}&place=${washroomAddress}&latitude=${latitude}&longitude=${longitude}`);
+      const response = await axios.post('http://192.168.0.104:8000/addWashroom', `name=${washroomName}&place=${washroomAddress}&latitude=${latitude}&longitude=${longitude}`);
       const values = response.data.message;
       if (values === "Washroom Added Successfully") {
         Alert.alert("Washroom Added", "Details for the washroom is added successfully", [{ text: 'Ok', onPress: () => { navigation.replace("Adminwashroom") } }]);
