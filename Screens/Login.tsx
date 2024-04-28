@@ -54,7 +54,7 @@ const Login = ({ navigation }: { navigation: NavigationProps }) => {
         Alert.alert("Error", "Invalid username or password");
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      Alert.alert("Error", `${error}`);
       return null;
     }
   };

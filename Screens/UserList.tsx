@@ -20,7 +20,7 @@ const fetchUserData = async () => {
         }
         return values;
     } catch (error) {
-        console.error('Error fetching data:', error);
+        Alert.alert("Error", `${error}`);
         return null;
     }
 };
@@ -57,8 +57,7 @@ const handleDelete = async (item: any, navigation: any) => {
             Alert.alert("Error", "Unable To delete the User");
         }
     } catch (error) {
-        console.error('Error fetching data:', error);
-        Alert.alert("Error", "Unable To delete the User");
+        Alert.alert("Error", `${error}`);
         return null;
     }
 };

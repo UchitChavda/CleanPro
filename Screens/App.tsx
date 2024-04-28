@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Button, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Button, Text, StyleSheet, Pressable, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,6 +18,7 @@ import UserList from './UserList';
 import ReportList from './ReportList';
 import ReportStatusList from './ReportStatusList';
 import CompletedReportList from './CompletedReportList';
+import Washadd from './Washadd';
 
 const Stack = createStackNavigator();
 
@@ -113,7 +114,7 @@ const fetchData = async () => {
     const sensorvalue = response.data[0];
     return sensorvalue;
   } catch (error) {
-    console.error('Error fetching data:', error);
+    Alert.alert('Error', `${error}`);
     return null;
   }
 };
@@ -284,6 +285,14 @@ function MyStack() {
       <Stack.Screen
         name="Washroom"
         component={Washlist}
+        options={{
+          headerTitleStyle: { display: 'none' },
+          headerBackAccessibilityLabel: "none",
+        }}
+      />
+      <Stack.Screen
+        name="Washadd"
+        component={Washadd}
         options={{
           headerTitleStyle: { display: 'none' },
           headerBackAccessibilityLabel: "none",

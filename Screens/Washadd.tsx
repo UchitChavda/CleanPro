@@ -11,21 +11,18 @@ import React, { useState, useEffect } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 
-type ReportListStackParamList = {
-  "User Home": { Name: string; }
-  "Report": { Name: string; Email: string };
+type AddWashtListStackParamList = {
+  "Adminwashroom": undefined;
+  "Washadd": undefined;
 };
 
-type RListNavigationProps = StackNavigationProp<ReportListStackParamList, "Report">;
+type AddwashListNavigationProps = StackNavigationProp<AddWashtListStackParamList, "Washadd">;
 
-const Report = ({ navigation, route }: { navigation: RListNavigationProps, route: any }) => {
-  const navigations = navigation;
-  const name = route.params.Name;
-  const email = route.params.Email;
+const Washadd = ({ navigation }: { navigation: AddwashListNavigationProps }) => {
   const [washroomName, setWashroomName] = useState('');
   const [washroomAddress, setWashroomAddress] = useState('');
-  const [problemTitle, setProblemTitle] = useState('');
-  const [problemDescription, setProblemDescription] = useState('');
+  const [latitude, setLatitude] = useState();
+  const [longitude, setLongitude] = useState();
 
   const handleWashroomNameChange = (text: any) => {
     setWashroomName(text);
@@ -35,23 +32,47 @@ const Report = ({ navigation, route }: { navigation: RListNavigationProps, route
     setWashroomAddress(text);
   };
 
-  const handleProblemTitleChange = (text: any) => {
-    setProblemTitle(text);
+  const handleLatitudeChange = (text: any) => {
+    if (/^\d*\.?\d*$/.test(text)) {
+      setLatitude(text);
+    } else {
+      Alert.alert('Error', 'Latitude must be a numerical value.');
+    }
   };
 
-  const handleProblemDescriptionChange = (text: any) => {
-    setProblemDescription(text);
+  const handleLongitudeChange = (text: any) => {
+    if (/^\d*\.?\d*$/.test(text)) {
+      setLongitude(text);
+    } else {
+      Alert.alert('Error', 'Longitude must be a numerical value.');
+    }
   };
 
   const handleClick = async () => {
     try {
-      const response = await axios.post('http://192.168.204.152:8000/addReport', `email=${email}&name=${washroomName}&add=${washroomAddress}&title=${problemTitle}&des=${problemDescription}`);
+      if (!washroomName.trim()) {
+        Alert.alert('Error', 'Please enter the washroom name.');
+        return;
+      }
+      if (!washroomAddress.trim()) {
+        Alert.alert('Error', 'Please enter the washroom address.');
+        return;
+      }
+      if (!latitude) {
+        Alert.alert('Error', 'Please enter the latitude.');
+        return;
+      }
+      if (!longitude) {
+        Alert.alert('Error', 'Please enter the longitude.');
+        return;
+      }
+      const response = await axios.post('http://192.168.204.152:8000/addWashroom', `name=${washroomName}&place=${washroomAddress}&latitude=${latitude}&longitude=${longitude}`);
       const values = response.data.message;
-      if (values === "Report Created Successfully") {
-        Alert.alert("Report Created", "Details for the report submitted successfully", [{ text: 'Ok', onPress: () => { reload() } }]);
+      if (values === "Washroom Added Successfully") {
+        Alert.alert("Washroom Added", "Details for the washroom is added successfully", [{ text: 'Ok', onPress: () => { navigation.replace("Adminwashroom") } }]);
       }
       else {
-        Alert.alert("Error", "Report cannot be created", [{ text: 'Ok', onPress: () => { reload() } }]);
+        Alert.alert("Error", `${values}`);
       }
     } catch (error) {
       Alert.alert("Error", `${error}`);
@@ -59,18 +80,13 @@ const Report = ({ navigation, route }: { navigation: RListNavigationProps, route
     }
   }
 
-  const reload = () => {
-    navigations.replace("Report", { Name: name, Email: email });
-  };
-
   return (
     <View style={logstyle.logBody}>
       <View>
-        <Text style={logstyle.logTitle}>Report</Text>
+        <Text style={logstyle.logTitle}>Add Washroom</Text>
       </View>
       <ScrollView>
         <View style={logstyle.logcard}>
-
           <TextInput
             label="Washroom Name"
             mode="outlined"
@@ -85,7 +101,7 @@ const Report = ({ navigation, route }: { navigation: RListNavigationProps, route
             onChangeText={handleWashroomNameChange}
           />
           <TextInput
-            label="Washroom Address"
+            label="Washroom Place"
             mode="outlined"
             theme={{
               roundness: 10,
@@ -98,7 +114,7 @@ const Report = ({ navigation, route }: { navigation: RListNavigationProps, route
             onChangeText={handleWashroomAddressChange}
           />
           <TextInput
-            label="Problem Title"
+            label="Latitude"
             mode="outlined"
             theme={{
               roundness: 10,
@@ -107,11 +123,12 @@ const Report = ({ navigation, route }: { navigation: RListNavigationProps, route
               }
             }}
             style={logstyle.logInput2}
-            value={problemTitle}
-            onChangeText={handleProblemTitleChange}
+            value={latitude}
+            keyboardType="numeric"
+            onChangeText={handleLatitudeChange}
           />
           <TextInput
-            label="Problem Description"
+            label="Longitude"
             mode="outlined"
             theme={{
               roundness: 10,
@@ -119,13 +136,14 @@ const Report = ({ navigation, route }: { navigation: RListNavigationProps, route
                 primary: 'red',
               }
             }}
-            style={logstyle.logInput3}
-            value={problemDescription}
-            onChangeText={handleProblemDescriptionChange}
+            style={logstyle.logInput2}
+            value={longitude}
+            keyboardType="numeric"
+            onChangeText={handleLongitudeChange}
           />
           <View>
-            <Pressable style={logstyle.logbutton} onPress={() => handleClick()}>
-              <Text style={logstyle.logButtonTitle}>Send</Text>
+            <Pressable style={logstyle.logbutton} onPress={handleClick}>
+              <Text style={logstyle.logButtonTitle}>Add</Text>
             </Pressable>
           </View>
         </View>
@@ -197,4 +215,4 @@ const logstyle = StyleSheet.create({
   }
 })
 
-export default Report
+export default Washadd

@@ -1,12 +1,14 @@
-import { View, Text, Pressable, StyleSheet,Alert } from 'react-native'
+import { View, Text, Pressable, StyleSheet, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
+import { ScrollView } from 'react-native-gesture-handler';
 
 type AdminWashStackParamList = {
     "Admin Home": { Name: string; },
     "Adminwashroom": undefined;
-    "Map": { longitude: Number, latitude: Number}
+    "Map": { longitude: Number, latitude: Number }
+    "Washadd": undefined;
 };
 
 type AdminWashNavigationProps = StackNavigationProp<AdminWashStackParamList, "Adminwashroom">;
@@ -15,13 +17,51 @@ const fetchWashroomData = async () => {
     try {
         const response = await axios.get('http://192.168.204.152:8000/washroomList');
         const values = response.data.Washrooms;
-        if (values==="No Washroom"){
-            Alert.alert("Error", "No Washrooms"); 
+        if (values === "No Washroom") {
+            Alert.alert("Error", "No Washrooms");
             return null
         }
         return values;
     } catch (error) {
-        console.error('Error fetching data:', error);
+        Alert.alert("Error", `${error}`);
+        return null;
+    }
+};
+
+const handlePress = (item: any, navigation: any) => {
+    Alert.alert(
+        'Delete',
+        'Are you sure, you want to delete this location?',
+        [
+            {
+                text: 'Confirm',
+                onPress: () => {
+                    handleDelete(item, navigation)
+                },
+            },
+            {
+                text: 'Cancel',
+                onPress: () => { },
+                style: 'destructive',
+            }
+        ],
+    );
+};
+
+
+const handleDelete = async (item: any, navigation: any) => {
+    try {
+        const name = item.name;
+        const place = item.place;
+        const response = await axios.post('http://192.168.204.152:8000/deleteWashroom',`name=${name}&place=${place}`);
+        if (response.data.message === "Washroom Details Deleted") {
+            navigation.replace("Adminwashroom");
+        }
+       else {
+            Alert.alert("Error", `${response.data.message}`);
+        }
+    } catch (error) {
+        Alert.alert("Error", "Unable To delete the Washroom");
         return null;
     }
 };
@@ -36,26 +76,31 @@ const AdminWashlist = ({ navigation }: { navigation: AdminWashNavigationProps })
         };
         fetchSensorData();
     }, []);
-    
+
     return (
-        <View style={wlstyles.wlBody}>
-            <View style={wlstyles.buttonSupView}>
-                <Text style={wlstyles.Title}>Washroom List</Text>
-                <View style={wlstyles.buttonView}>
-                    <Pressable style={wlstyles.wlButton} >
-                        <Text style={wlstyles.wlButtonTitle}>Add</Text>
-                    </Pressable>
-                    {washroomvalue !== null && washroomvalue !== 0   && (
-                        washroomvalue.map((item: any, index: any) => (
-                            <Pressable key={index} style={wlstyles.wlButton} onPress={() => navigation.navigate("Map", { longitude: item.longitude, latitude: item.latitude })}>
-                                <Text style={wlstyles.wlButtonTitle}>{item.name}</Text>
-                                <Text style={wlstyles.wlButtonTitle}>{item.place}</Text>
-                            </Pressable>
-                        ))
-                    )}
+        <ScrollView>
+            <View style={wlstyles.wlBody}>
+                <View style={wlstyles.buttonSupView}>
+                    <Text style={wlstyles.Title}>Washroom List</Text>
+                    <View style={wlstyles.buttonView}>
+                        <Pressable style={wlstyles.wlButton} onPress={() => navigation.navigate("Washadd")}>
+                            <Text style={wlstyles.wlButtonTitle}>Add</Text>
+                        </Pressable>
+                        {washroomvalue !== null && washroomvalue !== 0 && (
+                            washroomvalue.map((item: any, index: any) => (
+                                <Pressable key={index} style={wlstyles.wlButton} onPress={() => navigation.navigate("Map", { longitude: item.longitude, latitude: item.latitude })}>
+                                    <Text style={wlstyles.wlButtonTitle}>{item.name}</Text>
+                                    <Text style={wlstyles.wlButtonTitle}>{item.place}</Text>
+                                    <Pressable style={wlstyles.usrlListItemDelButton} onPress={() => handlePress(item, navigation)}>
+                                        <Text style={wlstyles.usrlListItemButtonText}>Delete</Text>
+                                    </Pressable>
+                                </Pressable>
+                            ))
+                        )}
+                    </View>
                 </View>
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
@@ -73,7 +118,7 @@ const wlstyles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-around',
-        height: "30%",
+        height: "100%",
         marginTop: 50
     },
     wlBody: {
@@ -90,11 +135,11 @@ const wlstyles = StyleSheet.create({
         backgroundColor: 'white',
         color: 'black',
         alignItems: 'center',
-        height: 65,
+        height: "8%",
         alignSelf: 'center',
         borderRadius: 10,
         justifyContent: 'center',
-        elevation: 20
+        elevation: 20,
     },
     wlButtonTitle: {
         fontSize: 20,
@@ -102,7 +147,17 @@ const wlstyles = StyleSheet.create({
         color: 'black',
         fontFamily: 'Times New Roman',
         fontStyle: "italic",
+    },
+    usrlListItemDelButton: {
+        backgroundColor: 'red',
+        marginRight: 20,
+        padding: 5,
+        borderRadius: 5
+    },
+    usrlListItemButtonText: {
+        color: "white"
     }
+
 });
 
 export default AdminWashlist

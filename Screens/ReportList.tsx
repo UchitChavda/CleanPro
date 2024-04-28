@@ -20,7 +20,7 @@ const fetchReportData = async () => {
         }
         return values;
     } catch (error) {
-        console.error('Error fetching data:', error);
+        Alert.alert("Error", `${error}`);
         return null;
     }
 };
@@ -60,8 +60,7 @@ const handleDelete = async (item: any, navigation: any) => {
             Alert.alert("Error", "Unable To delete the Report");
         }
     } catch (error) {
-        console.error('Error fetching data:', error);
-        Alert.alert("Error", "Unable To delete the Report");
+        Alert.alert("Error", `${error}`);
         return null;
     }
 };
@@ -102,8 +101,7 @@ const handlestatus = async (item: any, navigation: any) => {
             Alert.alert("Error", "Unable To update the Report");
         }
     } catch (error) {
-        console.error('Error fetching data:', error);
-        Alert.alert("Error", "Unable To change the Report");
+        Alert.alert("Error", `${error}`);
         return null;
     }
 };

@@ -116,7 +116,7 @@ const Register = ({ navigation }: { navigation: RegisterListNavigationProps }) =
       }
       }
     } catch (error) {
-      console.error('Error:', error);
+      Alert.alert("Error", `${error}`);
       return null;
     }
   };

@@ -20,7 +20,7 @@ const fetchReportData = async (email:any) => {
         }
         return values;
     } catch (error) {
-        console.error('Error fetching data:', error);
+        Alert.alert("Error", `${error}`);
         return null;
     }
 };
