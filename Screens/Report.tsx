@@ -1,23 +1,68 @@
-import { View, Text, TextInput, StyleSheet, Pressable, ScrollView, Alert } from 'react-native'
+import { View, Text, StyleSheet, Pressable, ScrollView, Alert } from 'react-native'
 import {
   List,
   Title,
   IconButton,
   Text as PaperText,
-  Button as PaperButton,
-  TextInput as PaperTextInput,
+  Button,
+  TextInput,
 } from 'react-native-paper';
-import React from 'react';
-import Textarea from 'react-native-textarea';
+import React, { useState, useEffect } from 'react';
+import { StackNavigationProp } from '@react-navigation/stack';
+import axios from 'axios';
 
-const handleClick = () => {
-    navigation.navigate("Home");
-    Alert.alert('Report Submited Successfully', 'My Alert Msg', [
-      {text: 'OK', onPress: () => console.log('OK Pressed')},
-    ]);
+type ReportListStackParamList = {
+  "User Home": { Name: string; }
+  "Report": { Name: string; Email: string };
+};
+
+type RListNavigationProps = StackNavigationProp<ReportListStackParamList, "Report">;
+
+const Report = ({ navigation, route }: { navigation: RListNavigationProps, route: any }) => {
+  const navigations = navigation;
+  const name = route.params.Name;
+  const email = route.params.Email;
+  const [washroomName, setWashroomName] = useState('');
+  const [washroomAddress, setWashroomAddress] = useState('');
+  const [problemTitle, setProblemTitle] = useState('');
+  const [problemDescription, setProblemDescription] = useState('');
+
+  const handleWashroomNameChange = (text: any) => {
+    setWashroomName(text);
+  };
+
+  const handleWashroomAddressChange = (text: any) => {
+    setWashroomAddress(text);
+  };
+
+  const handleProblemTitleChange = (text: any) => {
+    setProblemTitle(text);
+  };
+
+  const handleProblemDescriptionChange = (text: any) => {
+    setProblemDescription(text);
+  };
+
+  const handleClick = async () => {
+    try {
+      const response = await axios.post('http://192.168.204.152:8000/addReport', `email=${email}&name=${washroomName}&add=${washroomAddress}&title=${problemTitle}&des=${problemDescription}`);
+      const values = response.data.message;
+      if (values === "Report Created Successfully") {
+        Alert.alert("Report Created", "Details for the report submitted successfully", [{ text: 'Ok', onPress: () => { reload() } }]);
+      }
+      else {
+        Alert.alert("Error", "Report cannot be created", [{ text: 'Ok', onPress: () => { reload() } }]);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return null;
+    }
   }
 
-const Report = ({ navigation }) => {
+  const reload = () => {
+    navigations.replace("Report", { Name: name, Email: email });
+  };
+
   return (
     <View style={logstyle.logBody}>
       <View>
@@ -25,73 +70,61 @@ const Report = ({ navigation }) => {
       </View>
       <ScrollView>
         <View style={logstyle.logcard}>
-          <PaperTextInput
-            label="User Name"
-            mode="outlined"
-            theme={{
-              roundness: 10,
-              colors: {
-                primary: 'red',
-                underlineColor: 'transparent',
 
-              }
-            }}
-            style={logstyle.logInput2}
-          />
-          <PaperTextInput
+          <TextInput
             label="Washroom Name"
             mode="outlined"
             theme={{
               roundness: 10,
               colors: {
                 primary: 'red',
-                underlineColor: 'transparent',
-
               }
             }}
             style={logstyle.logInput2}
+            value={washroomName}
+            onChangeText={handleWashroomNameChange}
           />
-          <PaperTextInput
+          <TextInput
             label="Washroom Address"
             mode="outlined"
             theme={{
               roundness: 10,
               colors: {
                 primary: 'red',
-                underlineColor: 'transparent',
-
               }
             }}
             style={logstyle.logInput2}
+            value={washroomAddress}
+            onChangeText={handleWashroomAddressChange}
           />
-          <PaperTextInput
+          <TextInput
             label="Problem Title"
             mode="outlined"
             theme={{
               roundness: 10,
               colors: {
                 primary: 'red',
-                underlineColor: 'transparent',
-
               }
             }}
             style={logstyle.logInput2}
+            value={problemTitle}
+            onChangeText={handleProblemTitleChange}
           />
-          <PaperTextInput
+          <TextInput
             label="Problem Description"
             mode="outlined"
             theme={{
               roundness: 10,
               colors: {
                 primary: 'red',
-                underlineColor: 'transparent',
-
               }
             }}
             style={logstyle.logInput3}
+            value={problemDescription}
+            onChangeText={handleProblemDescriptionChange}
           />
           <View>
-            <Pressable style={logstyle.logbutton} onPress={()=> navigation.navigate("Home")}>
+            <Pressable style={logstyle.logbutton} onPress={() => handleClick()}>
               <Text style={logstyle.logButtonTitle}>Send</Text>
             </Pressable>
           </View>
@@ -111,15 +144,15 @@ const logstyle = StyleSheet.create({
     padding: 10,
   },
   logBody: {
-    backgroundColor: "whitesmoke",
-    // minHeight: 1000,
+    backgroundColor: "white",
   },
   logTitle: {
-    fontWeight: "bold",
     fontSize: 50,
-    alignSelf: "center",
-    fontFamily: 'Roboto',
+    fontWeight: '600',
+    alignSelf: 'center',
     color: 'black',
+    fontFamily: 'Times New Roman',
+    fontStyle: "italic",
   },
   logbutton: {
     width: 150,
@@ -141,23 +174,18 @@ const logstyle = StyleSheet.create({
     width: 'auto',
     marginLeft: 20,
     marginRight: 20,
-    underlineColorAndroid: "transparent",
     marginBottom: 10,
     marginTop: 5,
+    backgroundColor: "white",
   },
   logInput3: {
     width: 'auto',
     marginLeft: 20,
     marginRight: 20,
-    underlineColorAndroid: "transparent",
     marginBottom: 10,
     marginTop: 5,
     paddingBottom: 100,
-    // borderColor: 'black',
-    // borderWidth: 1,
-    // paddingBottom: 100,
-    // borderRadius: 10,
-
+    backgroundColor: "white",
   },
   logcard: {
     backgroundColor: 'white',
@@ -166,7 +194,6 @@ const logstyle = StyleSheet.create({
     elevation: 20,
     paddingTop: 10,
     paddingBottom: 30,
-    // marginVertical: 120,
   }
 })
 

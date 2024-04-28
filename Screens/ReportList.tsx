@@ -1,5 +1,5 @@
-import { View, Text, Pressable, StyleSheet,Alert } from 'react-native'
-import React,{useEffect,useState} from 'react'
+import { View, Text, Pressable, StyleSheet, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -12,10 +12,10 @@ type RListNavigationProps = StackNavigationProp<ReportListStackParamList, "Repor
 
 const fetchReportData = async () => {
     try {
-        const response = await axios.get('http://192.168.0.102:8000/reportList');
+        const response = await axios.get('http://192.168.204.152:8000/reportList');
         const values = response.data.Reports;
-        if (values==="No Reports"){
-            Alert.alert("Error", "No Reports"); 
+        if (values === "No Reports") {
+            Alert.alert("Error", "No Reports");
             return null
         }
         return values;
@@ -47,24 +47,64 @@ const handlePress = (item: any, navigation: any) => {
 
 const handleDelete = async (item: any, navigation: any) => {
     try {
-        console.log(item);
-        // const Email = item.Email;
-        // const response = await axios.post('http://192.168.0.102:8000/deleteUser', `email=${Email}`);
-        // if (response.data.message === "User Deleted") {
-        //     navigation.replace("User List");
-        // }
-        // if (response.data.message === "User Cannot be Deleted") {
-        //     Alert.alert("Error", "Unable To delete the User");
-        // }
+        const email = item.Email;
+        const name=item.Name;
+        const address=item.Address;
+        const title=item.Title;
+        const desciption=item.Description;
+        const response = await axios.post('http://192.168.204.152:8000/deleteReport',`email=${email}&name=${name}&add=${address}&title=${title}&des=${desciption}`);
+        if (response.data.message === "Report Details Deleted") {
+            navigation.replace("Report List");
+        }
+        else {
+            Alert.alert("Error", "Unable To delete the User");
+        }
     } catch (error) {
         console.error('Error fetching data:', error);
-        Alert.alert("Error", "Unable To delete the User");
+        Alert.alert("Error", "Unable To delete the Report");
         return null;
     }
 };
 
+const handleConfirmPress = (item: any, navigation: any) => {
+    Alert.alert(
+        'Change Status',
+        'Are you sure, you want to mark this report as completed?',
+        [
+            {
+                text: 'Confirm',
+                onPress: () => {
+                    handlestatus(item, navigation)
+                },
+            },
+            {
+                text: 'Cancel',
+                onPress: () => { },
+                style: 'destructive',
+            }
+        ],
+    );
+};
 
-const ReportList = ({ navigation }: { navigation: RListNavigationProps}) => {
+const handlestatus = async (item: any, navigation: any) => {
+    try {
+        console.log(item);
+        // const Email = item.Email;
+        // const response = await axios.post('http://192.168.204.152:8000/deleteUser', `email=${Email}`);
+        // if (response.data.message === "User Deleted") {
+        //     navigation.replace("User List");
+        // }
+        // if (response.data.message === "User Cannot be Deleted") {
+        //     Alert.alert("Error", "Unable To change the Report");
+        // }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        Alert.alert("Error", "Unable To change the Report");
+        return null;
+    }
+};
+
+const ReportList = ({ navigation }: { navigation: RListNavigationProps }) => {
     const [reportvalue, setReportValue] = useState<any>(0);
 
     useEffect(() => {
@@ -88,6 +128,9 @@ const ReportList = ({ navigation }: { navigation: RListNavigationProps}) => {
                                 <Text style={rptlStyles.rptlListItemText}>Washroom Address: {item.Address}</Text>
                                 <Text style={rptlStyles.rptlListItemText}>Problem: {item.Title}</Text>
                                 <Text style={rptlStyles.rptlListItemText}>Description: {item.Description}</Text>
+                                <Pressable style={rptlStyles.rptlListItemConButton} onPress={() => handleConfirmPress(item, navigation)}>
+                                    <Text style={rptlStyles.rptlListItemButtonText}>Completed</Text>
+                                </Pressable>
                                 <Pressable style={rptlStyles.rptlListItemDelButton} onPress={() => handlePress(item, navigation)}>
                                     <Text style={rptlStyles.rptlListItemButtonText}>Delete</Text>
                                 </Pressable>
@@ -106,7 +149,6 @@ const rptlStyles = StyleSheet.create({
         height: "100%"
     },
     rptlMainView: {
-        // backgroundColor: "blue",
         height: "100%",
         alignItems: 'center'
     },
@@ -120,7 +162,6 @@ const rptlStyles = StyleSheet.create({
         fontStyle: "italic",
     },
     rptlListView: {
-        // backgroundColor: "green",
         width: "90%"
     },
     rptlListItem: {
@@ -135,13 +176,18 @@ const rptlStyles = StyleSheet.create({
         marginBottom: 20
     },
     rptlListItemText: {
-        // backgroundColor: "yellow",
-        color:"black",
+        color: "black",
         marginLeft: 20,
         fontSize: 20
     },
     rptlListItemDelButton: {
         backgroundColor: 'red',
+        marginRight: 20,
+        padding: 5,
+        borderRadius: 5
+    },
+    rptlListItemConButton: {
+        backgroundColor: 'green',
         marginRight: 20,
         padding: 5,
         borderRadius: 5

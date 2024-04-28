@@ -108,7 +108,7 @@ const sytles1 = StyleSheet.create({
 
 const fetchData = async () => {
   try {
-    const response = await axios.get('http://192.168.0.102:8000/fetch-data-from-thingspeak/');
+    const response = await axios.get('http://192.168.204.152:8000/fetch-data-from-thingspeak/');
     const sensorvalue = response.data[0];
     return sensorvalue;
   } catch (error) {

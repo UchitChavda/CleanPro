@@ -12,7 +12,7 @@ type RListNavigationProps = StackNavigationProp<ReportListStackParamList, "Repor
 
 const fetchReportData = async (email:any) => {
     try {
-        const response = await axios.post('http://192.168.0.102:8000/userReport',`email=${email}`);
+        const response = await axios.post('http://192.168.204.152:8000/userReport',`email=${email}`);
         const values = response.data.Reports;
         if (values === "No Reports") {
             Alert.alert("Error", "No Reports");
@@ -44,11 +44,11 @@ const ReportStatusList = ({ navigation, route }: { navigation: RListNavigationPr
                     reportvalue.map((item: any, index: any) => (
                         <View style={rptlStyles.rptlListView} key={index}>
                             <View style={rptlStyles.rptlListItem}>
-                                <Text style={rptlStyles.rptlListItemText}>Report By: {item.Email}</Text>
                                 <Text style={rptlStyles.rptlListItemText}>Washroom Name: {item.Name}</Text>
                                 <Text style={rptlStyles.rptlListItemText}>Washroom Address: {item.Address}</Text>
                                 <Text style={rptlStyles.rptlListItemText}>Problem: {item.Title}</Text>
                                 <Text style={rptlStyles.rptlListItemText}>Description: {item.Description}</Text>
+                                <Text style={rptlStyles.rptlListItemText}>Status: {item.Status}</Text>
                             </View>
                         </View>
                     ))

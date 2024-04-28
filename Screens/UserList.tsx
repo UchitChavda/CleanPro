@@ -12,7 +12,7 @@ type UListNavigationProps = StackNavigationProp<UserListStackParamList, "User Li
 
 const fetchUserData = async () => {
     try {
-        const response = await axios.get('http://192.168.0.102:8000/userList');
+        const response = await axios.get('http://192.168.204.152:8000/userList');
         const values = response.data.Users;
         if (values==="No Users"){
             Alert.alert("Error", "No Users"); 
@@ -49,7 +49,7 @@ const handlePress = (item: any, navigation: any) => {
 const handleDelete = async (item: any, navigation: any) => {
     try {
         const Email = item.Email;
-        const response = await axios.post('http://192.168.0.102:8000/deleteUser', `email=${Email}`);
+        const response = await axios.post('http://192.168.204.152:8000/deleteUser', `email=${Email}`);
         if (response.data.message === "User Deleted") {
             navigation.replace("User List");
         }

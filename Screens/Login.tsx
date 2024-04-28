@@ -32,7 +32,7 @@ const Login = ({ navigation }: { navigation: NavigationProps }) => {
     try {
       // if (userName !== '' && password !== '') {
       //   if (password.length > 8) {
-      //     const response = await axios.post('http://192.168.0.102:8000/userDetails',`email=${userName}&password=${password}`)
+      //     const response = await axios.post('http://192.168.204.152:8000/userDetails',`email=${userName}&password=${password}`)
       //     const role = response.data.Role
       //     const name = response.data.Name
       //     if (role == "Admin") {
@@ -49,7 +49,7 @@ const Login = ({ navigation }: { navigation: NavigationProps }) => {
       //   Alert.alert("Error", "Fill the credentials");
       // }
       if (userName === 'a' && password === 'p') {
-        navigation.navigate("User Home", { Name: 'Uchit', Email:"chirayu@gmail.com" });
+        navigation.navigate("Admin Home", { Name: 'Uchit'});
       } else {
         Alert.alert("Error", "Invalid username or password");
       }

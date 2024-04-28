@@ -13,7 +13,7 @@ type AdminWashNavigationProps = StackNavigationProp<AdminWashStackParamList, "Ad
 
 const fetchWashroomData = async () => {
     try {
-        const response = await axios.get('http://192.168.0.102:8000/washroomList');
+        const response = await axios.get('http://192.168.204.152:8000/washroomList');
         const values = response.data.Washrooms;
         if (values==="No Washroom"){
             Alert.alert("Error", "No Washrooms"); 
