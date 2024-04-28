@@ -22,7 +22,7 @@ const Washlist = ({ navigation }: { navigation: WashNavigationProps }) => {
 
     const handleSearch = async () => {
         if (searchQuery !== "") {
-            const response = await axios.post('http://192.168.0.104:8000/washroomDetails', `place=${searchQuery}`);
+            const response = await axios.post('http://192.168.0.100:8000/washroomDetails', `place=${searchQuery}`);
             const values = response.data.Washrooms;
             if (values === "Washroom not Found") {
                 setSearchValue(null);

@@ -15,7 +15,7 @@ type AdminWashNavigationProps = StackNavigationProp<AdminWashStackParamList, "Ad
 
 const fetchWashroomData = async () => {
     try {
-        const response = await axios.get('http://192.168.0.104:8000/washroomList');
+        const response = await axios.get('http://192.168.0.100:8000/washroomList');
         const values = response.data.Washrooms;
         if (values === "No Washroom") {
             Alert.alert("Error", "No Washrooms");
@@ -53,7 +53,7 @@ const handleDelete = async (item: any, navigation: any) => {
     try {
         const name = item.name;
         const place = item.place;
-        const response = await axios.post('http://192.168.0.104:8000/deleteWashroom', `name=${name}&place=${place}`);
+        const response = await axios.post('http://192.168.0.100:8000/deleteWashroom', `name=${name}&place=${place}`);
         if (response.data.message === "Washroom Details Deleted") {
             navigation.replace("Adminwashroom");
         }

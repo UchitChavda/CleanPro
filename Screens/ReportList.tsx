@@ -14,7 +14,7 @@ type RListNavigationProps = StackNavigationProp<ReportListStackParamList, "Repor
 
 const fetchReportData = async () => {
     try {
-        const response = await axios.get('http://192.168.0.104:8000/reportList');
+        const response = await axios.get('http://192.168.0.100:8000/reportList');
         const values = response.data.Reports;
         if (values === "No Reports") {
             Alert.alert("No Reports", "No Reports has been submitted");
@@ -54,7 +54,7 @@ const handleDelete = async (item: any, navigation: any) => {
         const address = item.Address;
         const title = item.Title;
         const desciption = item.Description;
-        const response = await axios.post('http://192.168.0.104:8000/deleteReport', `email=${email}&name=${name}&add=${address}&title=${title}&des=${desciption}`);
+        const response = await axios.post('http://192.168.0.100:8000/deleteReport', `email=${email}&name=${name}&add=${address}&title=${title}&des=${desciption}`);
         if (response.data.message === "Report Details Deleted") {
             navigation.replace("Report List");
         }
@@ -95,7 +95,7 @@ const handlestatus = async (item: any, navigation: any) => {
         const address = item.Address;
         const title = item.Title;
         const desciption = item.Description;
-        const response = await axios.post('http://192.168.0.104:8000/updateReportStatus', `email=${email}&name=${name}&add=${address}&title=${title}&des=${desciption}`);
+        const response = await axios.post('http://192.168.0.100:8000/updateReportStatus', `email=${email}&name=${name}&add=${address}&title=${title}&des=${desciption}`);
         if (response.data.message === "Report Details Updated") {
             navigation.replace("Report List");
         }

@@ -14,7 +14,7 @@ type RListNavigationProps = StackNavigationProp<ReportListStackParamList, "Compl
 
 const fetchReportData = async () => {
     try {
-        const response = await axios.get('http://192.168.0.104:8000/completedReportList');
+        const response = await axios.get('http://192.168.0.100:8000/completedReportList');
         const values = response.data.Reports;
         if (values === "No Reports") {
             Alert.alert("Error", "No Reports");
@@ -54,7 +54,7 @@ const handleDelete = async (item: any, navigation: any) => {
         const address = item.Address;
         const title = item.Title;
         const desciption = item.Description;
-        const response = await axios.post('http://192.168.0.104:8000/deleteCompReport', `email=${email}&name=${name}&add=${address}&title=${title}&des=${desciption}`);
+        const response = await axios.post('http://192.168.0.100:8000/deleteCompReport', `email=${email}&name=${name}&add=${address}&title=${title}&des=${desciption}`);
         if (response.data.message === "Report Details Deleted") {
             navigation.replace("Complete Report List");
         }
